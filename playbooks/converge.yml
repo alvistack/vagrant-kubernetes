@@ -1,0 +1,251 @@
+---
+
+# (c) Wong Hoi Sing Edison <hswong3i@pantarei-design.com>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- hosts: all
+  remote_user: root
+  become: true
+  tasks:
+    - name: include default variables
+      include_vars: "./vars/main.yml"
+
+    - name: include release specific variables
+      include_vars: "{{ lookup('first_found', _params) }}"
+      vars:
+        _params:
+          files:
+            - "{{ ansible_distribution | lower }}-{{ ansible_distribution_version | lower }}.yml"
+            - "{{ ansible_distribution | lower }}-{{ ansible_distribution_major_version | lower }}.yml"
+            - "{{ ansible_os_family | lower }}-{{ ansible_distribution_major_version | lower }}.yml"
+            - "{{ ansible_distribution | lower }}.yml"
+            - "{{ ansible_os_family | lower }}.yml"
+          paths:
+            - "./vars"
+      ignore_errors: true
+
+    - name: include release specific tasks
+      include_tasks: "{{ lookup('first_found', _params) }}"
+      vars:
+        _params:
+          files:
+            - "{{ ansible_distribution | lower }}-{{ ansible_distribution_version | lower }}.yml"
+            - "{{ ansible_distribution | lower }}-{{ ansible_distribution_major_version | lower }}.yml"
+            - "{{ ansible_os_family | lower }}-{{ ansible_distribution_major_version | lower }}.yml"
+            - "{{ ansible_distribution | lower }}.yml"
+            - "{{ ansible_os_family | lower }}.yml"
+          paths:
+            - "./tasks"
+      ignore_errors: true
+
+    - include_role:
+        name: bootstrap
+
+    - include_role:
+        name: python
+
+    - include_role:
+        name: cni_plugins
+
+    - include_role:
+        name: cri_tools
+
+    - include_role:
+        name: containers_common
+
+    - include_role:
+        name: crun
+
+    - include_role:
+        name: conmon
+
+    - include_role:
+        name: cri_o
+
+    - include_role:
+        name: kubectl
+
+    - include_role:
+        name: kubeadm
+
+    - include_role:
+        name: kubelet
+
+- hosts: etcd
+  remote_user: root
+  become: true
+  tasks:
+    - include_role:
+        name: etcd
+
+    - name: prepare directories
+      file:
+        dest: "{{ item.dest }}"
+        owner: "{{ item.owner | default('root') }}"
+        group: "{{ item.group | default('root') }}"
+        mode: "{{ item.mode | default('0755') }}"
+        state: "{{ item.state | default('directory') }}"
+      loop:
+        - { dest: "/etc/kubernetes/pki" }
+        - { dest: "/etc/kubernetes/pki/etcd" }
+      when: inventory_hostname == ansible_play_hosts[0]
+
+    - name: "generate {{ kubernetes_etcd.external.keyFile }}"
+      environment:
+        PATH: "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      vars:
+        ansible_python_interpreter: "python3"
+      openssl_privatekey:
+        path: "{{ kubernetes_etcd.external.keyFile }}"
+      when: inventory_hostname == ansible_play_hosts[0]
+
+    - name: "generate {{ kubernetes_etcd.external.keyFile | splitext | first }}.csr"
+      environment:
+        PATH: "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      vars:
+        ansible_python_interpreter: "python3"
+      openssl_csr:
+        path: "{{ kubernetes_etcd.external.keyFile | splitext | first }}.csr"
+        privatekey_path: "{{ kubernetes_etcd.external.keyFile }}"
+        common_name: "{{ kube_apiserver_csr_common_name }}"
+        subject:
+          CN: "{{ kube_apiserver_csr_common_name }}"
+        subject_alt_name: "{{ kube_apiserver_csr_subject_alt_name }}"
+        key_usage:
+          - digitalSignature
+          - keyEncipherment
+          - nonRepudiation
+        extended_key_usage:
+          - clientAuth
+          - serverAuth
+        basic_constraints: "CA:FALSE"
+      when: inventory_hostname == ansible_play_hosts[0]
+
+    - name: "generate {{ kubernetes_etcd.external.certFile }}"
+      environment:
+        PATH: "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      vars:
+        ansible_python_interpreter: "python3"
+      openssl_certificate:
+        path: "{{ kubernetes_etcd.external.certFile }}"
+        csr_path: "{{ kubernetes_etcd.external.keyFile | splitext | first }}.csr"
+        privatekey_path: "{{ kubernetes_etcd.external.keyFile }}"
+        ownca_path: "{{ etcd_trusted_ca_file }}"
+        ownca_privatekey_path: "{{ etcd_trusted_ca_file | splitext | first }}.key"
+        provider: "ownca"
+      when: inventory_hostname == ansible_play_hosts[0]
+
+    - name: "copy {{ kubernetes_etcd.external.caFile }}"
+      copy:
+        dest: "{{ item.dest }}"
+        src: "{{ item.src }}"
+        owner: "{{ item.owner | default('root') }}"
+        group: "{{ item.group | default('root') }}"
+        mode: "{{ item.mode | default('0644') }}"
+        remote_src: true
+        force: false
+      loop:
+        - { dest: "{{ kubernetes_etcd.external.caFile }}", src: "{{ etcd_trusted_ca_file }}" }
+      when: inventory_hostname == ansible_play_hosts[0]
+
+    - name: prepare files
+      file:
+        dest: "{{ item.dest }}"
+        owner: "{{ item.owner | default('root') }}"
+        group: "{{ item.group | default('root') }}"
+        mode: "{{ item.mode | default('0644') }}"
+        state: "{{ item.state | default('file') }}"
+      loop:
+        - { dest: "{{ kubernetes_etcd.external.caFile }}" }
+        - { dest: "{{ kubernetes_etcd.external.certFile }}" }
+        - { dest: "{{ kubernetes_etcd.external.keyFile }}", mode: "0600" }
+      when: inventory_hostname == ansible_play_hosts[0]
+
+- hosts: kube_master
+  remote_user: root
+  become: true
+  tasks:
+    - name: base64 encode
+      shell: |
+        set -o pipefail
+        tar zcfP - {{ _params | join(' ') }} | base64 -w 0
+      vars:
+        _params:
+          - "{{ kubernetes_etcd.external.caFile }}"
+          - "{{ kubernetes_etcd.external.certFile }}"
+          - "{{ kubernetes_etcd.external.keyFile }}"
+      args:
+        executable: "/bin/bash"
+      when: inventory_hostname == ansible_play_hosts[0]
+      delegate_to: "{{ groups['etcd'][0] }}"
+      register: base64_encode_result
+      changed_when: base64_encode_result is not succeeded
+
+    - name: base64 decode
+      shell: |
+        set -o pipefail
+        echo -n {{ base64_encode_result.stdout | quote }} | base64 -d | tar zx -C /
+      args:
+        executable: "/bin/bash"
+      when: inventory_hostname == ansible_play_hosts[0]
+      register: base64_decode_result
+      changed_when: base64_decode_result is not succeeded
+
+    - include_role:
+        name: kube_master
+
+- hosts: kube_node:!kube_master
+  remote_user: root
+  become: true
+  tasks:
+    - name: base64 encode
+      shell: |
+        set -o pipefail
+        tar zcfP - {{ item.value | join(' ') }} | base64 -w 0
+      with_dict:
+        base64:
+          - "/etc/kubernetes/admin.conf"
+      args:
+        executable: "/bin/bash"
+      delegate_to: "{{ groups['kube_master'][0] }}"
+      register: base64_encode_result
+      changed_when: base64_encode_result is not succeeded
+
+    - name: base64 decode
+      shell: |
+        set -o pipefail
+        echo -n {{ base64_encode_result.results[0].stdout | quote }} | base64 -d | tar zx -C /
+      args:
+        executable: "/bin/bash"
+      register: base64_decode_result
+      changed_when: base64_decode_result is not succeeded
+
+    - name: kubeadm token create
+      environment:
+        PATH: "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      shell: |
+        set -o pipefail
+        kubeadm token create
+      args:
+        executable: "/bin/bash"
+      delegate_to: "{{ groups['kube_master'][0] }}"
+      register: kubeadm_token_result
+      until: kubeadm_token_result is succeeded
+      changed_when: kubeadm_token_result is not succeeded
+      ignore_errors: true
+
+    - include_role:
+        name: kube_node
+      vars:
+        kubeadm_token: "{{ kubeadm_token_result.stdout }}"
