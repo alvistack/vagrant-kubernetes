@@ -41,13 +41,22 @@
       register: result
 
     - name: echo > instance_config.yml
-      copy:
-        dest: "{{ molecule_instance_config }}"
-        content: >-
+      vars:
+        _params: >-
           {%- set _ns = namespace() -%}
           {%- set _ns._params = [] -%}
           {%- for item in result.results -%}
-          {%-   set _ns._params = _ns._params + [{"instance": item.Host, "address": item.HostName, "user": item.User, "port": item.Port, "identity_file": item.IdentityFile}] -%}
+          {%-   set _param = {} -%}
+          {%-   set _param.instance = item.Host -%}
+          {%-   set _param.address = item.HostName -%}
+          {%-   set _param.user = item.User -%}
+          {%-   set _param.port = item.Port -%}
+          {%-   set _param.identity_file = item.IdentityFile -%}
+          {%-   set _ns._params = _ns._params + [_param] -%}
           {%- endfor -%}
           {{ _ns._params | to_json | from_json | molecule_to_yaml | molecule_header }}
+      copy:
+        dest: "{{ molecule_instance_config }}"
+        mode: "0644"
+        content: "{{ _params }}"
       when: result is changed
