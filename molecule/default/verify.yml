@@ -18,30 +18,14 @@
 
 - hosts: localhost
   connection: local
-  remote_user: root
-  become: true
   gather_facts: false
   tasks:
-    - name: docker image inspect
-      docker_image_info:
-        name: "{{ molecule_ephemeral_directory | regex_replace('^.*/([^/]*/[^/]*)$', '\\1') }}:{{ item.name }}"
-      loop_control:
-        label: "{{ item.name }}"
-      loop: "{{ molecule_yml.platforms }}"
-      register: result
-
-    - name: docker commit
+    - name: vagrant package
       shell: |
         set -o pipefail
-        docker inspect {{ item.name }} && docker commit \
-          --change 'CMD ["{{ result.results[i].images[0].Config.Cmd | join('", "') }}"]' \
-          --change 'ENTRYPOINT ["{{ result.results[i].images[0].Config.Entrypoint | join('", "') }}"]' \
-          {{ item.name }} {{ molecule_ephemeral_directory | regex_replace('^.*/([^/]*/[^/]*)$', '\1') }}:{{ item.name }}-commit
+        cd {{ molecule_ephemeral_directory }}
+        VAGRANT_LIBVIRT_VIRT_SYSPREP_OPERATIONS="defaults" vagrant package
       args:
         executable: "/bin/bash"
-      loop_control:
-        label: "{{ item.name }}"
-        index_var: i
-      with_items: "{{ molecule_yml.platforms }}"
       changed_when: false
       ignore_errors: true

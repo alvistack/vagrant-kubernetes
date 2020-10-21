@@ -44,17 +44,14 @@ script:
       && sudo -E molecule syntax -s $MOLECULE_SCENARIO_NAME \
       && sudo -E molecule converge -s $MOLECULE_SCENARIO_NAME \
       && sudo -E molecule side-effect -s $MOLECULE_SCENARIO_NAME \
-      && sudo -E molecule verify -s $MOLECULE_SCENARIO_NAME \
-      && sudo -E molecule destroy -s $MOLECULE_SCENARIO_NAME
+      && sudo -E molecule verify -s $MOLECULE_SCENARIO_NAME
 
 after_success:
   - |
     vagrant cloud auth login --token "$VAGRANT_TOKEN"
     export REPO=$(echo $TRAVIS_REPO_SLUG | sed 's/\/vagrant-/\//g')
     if [[ -n "$TRAVIS_TAG" ]] && [[ "$TRAVIS_TAG" =~ ^$MOLECULE_SCENARIO_NAME ]]; then
-      docker tag "$IMAGE" "$REPO":"$TRAVIS_TAG"
-      docker push "$REPO":"$TRAVIS_TAG"
+      vagrant cloud publish "alvistack/$REPO" "$TRAVIS_TAG" libvirt ~/.cache/molecule/$TRAVIS_REPO_SLUG/$MOLECULE_SCENARIO_NAME/package.box
     elif [[ "$TRAVIS_BRANCH" =~ master ]]; then
-      docker tag "$IMAGE" "$REPO":"$MOLECULE_SCENARIO_NAME"
-      docker push "$REPO":"$MOLECULE_SCENARIO_NAME"
+      vagrant cloud publish "alvistack/$REPO" "$MOLECULE_SCENARIO_NAME" libvirt ~/.cache/molecule/$TRAVIS_REPO_SLUG/$MOLECULE_SCENARIO_NAME/package.box
     fi

@@ -1,62 +1,53 @@
 ---
-- name: Create
-  hosts: localhost
+
+# (c) Wong Hoi Sing Edison <hswong3i@pantarei-design.com>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- hosts: localhost
   connection: local
   gather_facts: false
-  no_log: "{{ molecule_no_log }}"
   tasks:
-    - name: Create molecule instance(s)
+    - name: vagrant up
       vagrant:
         instance_name: "{{ item.name }}"
         instance_interfaces: "{{ item.interfaces | default(omit) }}"
         instance_raw_config_args: "{{ item.instance_raw_config_args | default(omit) }}"
-
         config_options: "{{ item.config_options | default(omit) }}"
-
         platform_box: "{{ item.box | default('generic/alpine310') }}"
         platform_box_version: "{{ item.box_version | default(omit) }}"
         platform_box_url: "{{ item.box_url | default(omit) }}"
-
         provider_name: "{{ molecule_yml.driver.provider.name }}"
         provider_memory: "{{ item.memory | default(omit) }}"
         provider_cpus: "{{ item.cpus | default(omit) }}"
         provider_options: "{{ item.provider_options | default(omit) }}"
         provider_raw_config_args: "{{ item.provider_raw_config_args | default(omit) }}"
         provider_override_args: "{{ item.provider_override_args | default(omit) }}"
-
         provision: "{{ item.provision | default(omit) }}"
-
-        state: up
-      register: server
-      with_items: "{{ molecule_yml.platforms }}"
+        state: "up"
       loop_control:
         label: "{{ item.name }}"
-      no_log: false
+      loop: "{{ molecule_yml.platforms }}"
+      register: result
 
-    # NOTE(retr0h): Vagrant/VBox sucks and parallelizing instance creation
-    # causes issues.
-
-    # Mandatory configuration for Molecule to function.
-
-    - when: server.changed | bool
-      block:
-
-        - name: Populate instance config dict
-          set_fact:
-            instance_conf_dict: {
-              'instance': "{{ item.Host }}",
-              'address': "{{ item.HostName }}",
-              'user': "{{ item.User }}",
-              'port': "{{ item.Port }}",
-              'identity_file': "{{ item.IdentityFile }}", }
-          with_items: "{{ server.results }}"
-          register: instance_config_dict
-
-        - name: Convert instance config dict to a list
-          set_fact:
-            instance_conf: "{{ instance_config_dict.results | map(attribute='ansible_facts.instance_conf_dict') | list }}"
-
-        - name: Dump instance config
-          copy:
-            content: "{{ instance_conf | to_json | from_json | molecule_to_yaml | molecule_header }}"
-            dest: "{{ molecule_instance_config }}"
+    - name: echo > instance_config.yml
+      copy:
+        dest: "{{ molecule_instance_config }}"
+        content: >-
+          {%- set _ns = namespace() -%}
+          {%- set _ns._params = [] -%}
+          {%- for item in result.results -%}
+          {%-   set _ns._params = _ns._params + [{"instance": item.Host, "address": item.HostName, "user": item.User, "port": item.Port, "identity_file": item.IdentityFile}] -%}
+          {%- endfor -%}
+          {{ _ns._params | to_json | from_json | molecule_to_yaml | molecule_header }}
+      when: result is changed

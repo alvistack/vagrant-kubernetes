@@ -18,6 +18,7 @@
 
 - hosts: all
   remote_user: root
+  become: true
   tasks:
     - name: rm -rf /root/.ansible/tmp/*
       raw: |

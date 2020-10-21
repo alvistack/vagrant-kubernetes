@@ -16,6 +16,7 @@
 
 - hosts: all
   remote_user: root
+  become: true
   tasks:
     - name: include default variables
       include_vars: "./vars/main.yml"
@@ -33,43 +34,3 @@
           paths:
             - "./vars"
       ignore_errors: true
-
-    - name: prepare directories
-      file:
-        dest: "{{ item.dest }}"
-        owner: "{{ item.owner | default('root') }}"
-        group: "{{ item.group | default('root') }}"
-        mode: "{{ item.mode | default('0755') }}"
-        state: "{{ item.state | default('directory') }}"
-      loop:
-        - { dest: "/root", mode: "0700" }
-        - { dest: "/root/.ssh", mode: "0700" }
-        - { dest: "/run/sshd" }
-
-    - name: copy templates
-      template:
-        dest: "{{ item.dest }}"
-        src: "{{ item.src | default('./templates' + item.dest + '.j2') }}"
-        owner: "{{ item.owner | default('root') }}"
-        group: "{{ item.group | default('root') }}"
-        mode: "{{ item.mode | default('0644') }}"
-      loop:
-        - { dest: "/root/.profile" }
-        - { dest: "/root/.bashrc" }
-        - { dest: "/root/.ssh/authorized_keys", mode: "0600" }
-        - { dest: "/root/.ssh/config", mode: "0600" }
-        - { dest: "/root/.bash_logout" }
-
-    - name: prepare files
-      file:
-        dest: "{{ item.dest }}"
-        owner: "{{ item.owner | default('root') }}"
-        group: "{{ item.group | default('root') }}"
-        mode: "{{ item.mode | default('0644') }}"
-        state: "{{ item.state | default('file') }}"
-      loop:
-        - { dest: "/root/.profile" }
-        - { dest: "/root/.bashrc" }
-        - { dest: "/root/.ssh/authorized_keys", mode: "0600" }
-        - { dest: "/root/.ssh/config", mode: "0600" }
-        - { dest: "/root/.bash_logout" }
