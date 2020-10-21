@@ -19,7 +19,7 @@ driver:
   provider:
     name: libvirt
 platforms:
-  - name: vagrant
+  - name: ${MOLECULE_INSTANCE_NAME}-1
     box: generic/ubuntu2004
     cpu: 2
     memory: 4096

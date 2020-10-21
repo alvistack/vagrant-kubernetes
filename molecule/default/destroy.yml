@@ -31,12 +31,3 @@
         label: "{{ item.name }}"
       loop: "{{ molecule_yml.platforms }}"
       register: result
-
-    - name: echo > instance_config.yml
-      copy:
-        dest: "{{ molecule_instance_config }}"
-        content: >-
-          {%- set _ns = namespace() -%}
-          {%- set _ns._params = [] -%}
-          {{ _ns._params | to_json | from_json | molecule_to_yaml | molecule_header }}
-      when: result is changed
