@@ -48,7 +48,7 @@ script:
 
 after_success:
   - |
-    vagrant cloud auth login --token "$VAGRANT_TOKEN"
+    sudo vagrant cloud auth login --token "$VAGRANT_TOKEN"
     export REPO=$(echo $TRAVIS_REPO_SLUG | sed 's/\/vagrant-/\//g')
     cd $HOME/.cache/molecule/$TRAVIS_REPO_SLUG/$MOLECULE_SCENARIO_NAME
     if [[ -n "$TRAVIS_TAG" ]] && [[ "$TRAVIS_TAG" =~ ^$MOLECULE_SCENARIO_NAME ]]; then
