@@ -14,9 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# kernel
-kernel_release: "mainline"
-
 # etcd
 etcd_version: "v3.4.13"
 etcd_cert_file: "/etc/etcd/pki/server.crt"

@@ -50,9 +50,9 @@ after_success:
   - |
     sudo vagrant cloud auth login --token "$VAGRANT_TOKEN"
     export REPO=$(echo $TRAVIS_REPO_SLUG | sed 's/\/vagrant-/\//g')
-    cd $HOME/.cache/molecule/$TRAVIS_REPO_SLUG/$MOLECULE_SCENARIO_NAME
+    export BOX="$HOME/.cache/molecule/$TRAVIS_REPO_SLUG/$MOLECULE_SCENARIO_NAME/package.box"
     if [[ -n "$TRAVIS_TAG" ]] && [[ "$TRAVIS_TAG" =~ ^$MOLECULE_SCENARIO_NAME ]]; then
-      sudo vagrant cloud publish -rf  "alvistack/$REPO" "$TRAVIS_TAG" libvirt package.box
+      sudo vagrant cloud publish -rf "$REPO" "$TRAVIS_TAG" libvirt "$BOX"
     elif [[ "$TRAVIS_BRANCH" =~ master ]]; then
-      sudo vagrant cloud publish -rf "alvistack/$REPO" "$MOLECULE_SCENARIO_NAME" libvirt package.box
+      sudo vagrant cloud publish -rf "$REPO" "$MOLECULE_SCENARIO_NAME" libvirt "$BOX"
     fi
