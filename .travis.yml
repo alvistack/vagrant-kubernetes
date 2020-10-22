@@ -52,7 +52,7 @@ after_success:
     export REPO=$(echo $TRAVIS_REPO_SLUG | sed 's/\/vagrant-/\//g')
     cd $HOME/.cache/molecule/$TRAVIS_REPO_SLUG/$MOLECULE_SCENARIO_NAME
     if [[ -n "$TRAVIS_TAG" ]] && [[ "$TRAVIS_TAG" =~ ^$MOLECULE_SCENARIO_NAME ]]; then
-      vagrant cloud publish -rf  "alvistack/$REPO" "$TRAVIS_TAG" libvirt package.box
+      sudo vagrant cloud publish -rf  "alvistack/$REPO" "$TRAVIS_TAG" libvirt package.box
     elif [[ "$TRAVIS_BRANCH" =~ master ]]; then
-      vagrant cloud publish -rf "alvistack/$REPO" "$MOLECULE_SCENARIO_NAME" libvirt package.box
+      sudo vagrant cloud publish -rf "alvistack/$REPO" "$MOLECULE_SCENARIO_NAME" libvirt package.box
     fi
