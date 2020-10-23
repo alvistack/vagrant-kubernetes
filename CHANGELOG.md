@@ -4,7 +4,7 @@
 
 ### Major Changes
 
-## 1.19.3-4alvistack1 - 2020-10-22
+## 1.19.3-4alvistack1 - 2020-10-23
 
   - Ubuntu 20.04 based
   - Base box running by [Vagrant Libvirt Provider](https://github.com/vagrant-libvirt/vagrant-libvirt)
