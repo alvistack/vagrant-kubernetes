@@ -11,8 +11,8 @@ Learn more about Kubernetes: <https://kubernetes.io/>
 
 ## Supported Tags and Respective `Vagrantfile` Links
 
-  - [`1.19`, `latest`](https://github.com/alvistack/vagrant-kubernetes/blob/master/molecule/1.19/Vagrantfile.j2)
-  - [`1.18`](https://github.com/alvistack/vagrant-kubernetes/blob/master/molecule/1.18/Vagrantfile.j2)
+  - [`1.19`, `latest`](https://github.com/alvistack/vagrant-kubernetes/blob/master/molecule/1.19/molecule.yml)
+  - [`1.18`](https://github.com/alvistack/vagrant-kubernetes/blob/master/molecule/1.18/molecule.yml)
 
 ## Overview
 
@@ -20,7 +20,7 @@ This Vagrant box makes it easy to get an instance of Kubernetes up and running.
 
 Based on [Roboxes Vagrant Box](https://roboxes.org/) with:
 
-  - Ubuntu 20.04 based
+  - Ubuntu 18.04/20.04 based
   - Base box running by [Vagrant Libvirt Provider](https://github.com/vagrant-libvirt/vagrant-libvirt)
   - Provision by [Ansible](https://www.ansible.com/) and [Molecule Vagrant Plugin](https://github.com/ansible-community/molecule-vagrant)
 
