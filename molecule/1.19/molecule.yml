@@ -19,7 +19,7 @@ driver:
   provider:
     name: libvirt
 platforms:
-  - name: ${MOLECULE_INSTANCE_NAME}-1
+  - name: kubernetes
     box: generic/ubuntu2004
     cpu: 2
     memory: 4096
@@ -36,7 +36,6 @@ platforms:
     groups:
       - etcd
       - kube_master
-      - kube_node
 lint: |
   set -ex
   yamllint .
