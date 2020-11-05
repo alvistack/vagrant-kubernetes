@@ -13,20 +13,34 @@ env:
 
 before_install:
   - |
+    sudo apt-get update
+    sudo apt-get -y install bridge-utils dnsmasq-base ebtables libguestfs-tools libvirt-clients libvirt-daemon-system libvirt-dev qemu-kvm qemu-utils ruby-dev
+
+  - |
     curl -Os https://releases.hashicorp.com/vagrant/2.2.10/vagrant_2.2.10_x86_64.deb
     curl -Os https://releases.hashicorp.com/vagrant/2.2.10/vagrant_2.2.10_SHA256SUMS
     curl -Os https://releases.hashicorp.com/vagrant/2.2.10/vagrant_2.2.10_SHA256SUMS.sig
     curl -skL https://keybase.io/hashicorp/pgp_keys.asc | sudo gpg --import
     gpg --verify vagrant_2.2.10_SHA256SUMS.sig vagrant_2.2.10_SHA256SUMS
     sha256sum -c vagrant_2.2.10_SHA256SUMS 2>&1 | grep OK
-    sudo apt-get update && sudo apt-get install -y bridge-utils dnsmasq-base ebtables libguestfs-tools libvirt-clients libvirt-daemon-system libvirt-dev qemu-kvm qemu-utils ruby-dev
     sudo dpkg -i vagrant_2.2.10_x86_64.deb
     sudo vagrant plugin install vagrant-libvirt
     rm -rf vagrant_2.2.10_*
 
   - |
-    sudo apt-get -y purge python3-openssl && sudo apt-get -y autoremove
-    sudo apt-get update && sudo apt-get install -y ca-certificates curl gcc iproute2 pwgen python3 python3-dev sudo
+    curl -Os https://releases.hashicorp.com/packer/1.6.5/packer_1.6.5_linux_amd64.zip
+    curl -Os https://releases.hashicorp.com/packer/1.6.5/packer_1.6.5_SHA256SUMS
+    curl -Os https://releases.hashicorp.com/packer/1.6.5/packer_1.6.5_SHA256SUMS.sig
+    curl -skL https://keybase.io/hashicorp/pgp_keys.asc | sudo gpg --import
+    gpg --verify packer_1.6.5_SHA256SUMS.sig packer_1.6.5_SHA256SUMS
+    sha256sum -c packer_1.6.5_SHA256SUMS 2>&1 | grep OK
+    sudo unzip -qq -o -d /usr/local/bin packer_1.6.5_linux_amd64.zip
+    rm -rf packer_1.6.5_*
+
+  - |
+    sudo apt-get update
+    sudo apt-get -y purge python3-openssl
+    sudo apt-get -y install ca-certificates curl gcc iproute2 pwgen python3 python3-dev sudo
     curl -skL https://bootstrap.pypa.io/get-pip.py | sudo -H python3 - --prefix=/usr/local
     sudo -H pip3 install --prefix=/usr/local --upgrade --ignore-installed --requirement requirements.txt
 
@@ -38,13 +52,13 @@ install:
 
 script:
   - |
-    source ./scripts/run-tests.sh \
-      && sudo -E molecule dependency -s $MOLECULE_SCENARIO_NAME \
-      && sudo -E molecule lint -s $MOLECULE_SCENARIO_NAME \
-      && sudo -E molecule syntax -s $MOLECULE_SCENARIO_NAME \
-      && sudo -E molecule converge -s $MOLECULE_SCENARIO_NAME \
-      && sudo -E molecule side-effect -s $MOLECULE_SCENARIO_NAME \
-      && sudo -E molecule verify -s $MOLECULE_SCENARIO_NAME
+    yamllint .
+    ansible-lint
+    flake8
+
+  - |
+    cd packer/$PACKER_BUILDER_NAME
+    packer build packer.json
 
 after_success:
   - |

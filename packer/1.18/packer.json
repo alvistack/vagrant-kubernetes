@@ -1,0 +1,27 @@
+{
+  "builders": [
+    {
+      "communicator": "ssh",
+      "provider": "libvirt",
+      "source_path": "generic/ubuntu2004",
+      "type": "vagrant"
+    }
+  ],
+  "provisioners": [
+    {
+      "inline": [
+        "set -ex",
+        "apt-get update",
+        "apt-get install -y ca-certificates curl gcc iproute2 python3 python3-dev sudo"
+      ],
+      "type": "shell"
+    },
+    {
+      "galaxy_file": "./ansible-galaxy-requirements.yml",
+      "inventory_directory": "./",
+      "playbook_file": "./packer.yml",
+      "type": "ansible"
+    }
+  ]
+}
+

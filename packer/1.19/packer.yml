@@ -14,18 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- import_playbook: ../../playbooks/verify.yml
-
-- hosts: localhost
-  connection: local
-  gather_facts: false
-  tasks:
-    - name: vagrant package
-      shell: |
-        set -o pipefail
-        cd {{ molecule_ephemeral_directory }}
-        VAGRANT_LIBVIRT_VIRT_SYSPREP_OPERATIONS="defaults" vagrant package
-      args:
-        executable: "/bin/bash"
-      changed_when: false
-      ignore_errors: true
+- import_playbook: ../../playbooks/prepare.yml
+- import_playbook: ../../playbooks/converge.yml
+- import_playbook: ../../playbooks/side_effect.yml

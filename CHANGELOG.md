@@ -4,6 +4,8 @@
 
 ### Major Changes
 
+  - Revamp with Packer
+
 ## 1.19.3-4alvistack1 - 2020-10-23
 
   - Ubuntu 18.04/20.04 based

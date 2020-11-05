@@ -1,0 +1,10 @@
+{
+  "builders": [
+    {
+      "type": "vagrant",
+      "provider": "libvirt",
+      "communicator": "ssh",
+      "source_path": "generic/ubuntu2004"
+    }
+  ]
+}

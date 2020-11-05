@@ -17,20 +17,37 @@
 - hosts: all
   remote_user: root
   become: true
+  gather_facts: false
   tasks:
-    - name: include default variables
-      include_vars: "./vars/main.yml"
+    - name: rm -rf /root/.ansible/tmp/*
+      raw: |
+        set -ex
+        rm -rf /root/.ansible/tmp/*
+        rm -rf /root/.cache/*
+        rm -rf /tmp/*
+      changed_when: false
+      ignore_errors: true
 
-    - name: include release specific variables
-      include_vars: "{{ lookup('first_found', _params) }}"
-      vars:
-        _params:
-          files:
-            - "{{ ansible_distribution | lower }}-{{ ansible_distribution_version | lower }}.yml"
-            - "{{ ansible_distribution | lower }}-{{ ansible_distribution_major_version | lower }}.yml"
-            - "{{ ansible_os_family | lower }}-{{ ansible_distribution_major_version | lower }}.yml"
-            - "{{ ansible_distribution | lower }}.yml"
-            - "{{ ansible_os_family | lower }}.yml"
-          paths:
-            - "./vars"
+    - name: debian | apt-get clean
+      raw: |
+        set -ex
+        apt-get clean
+        rm -rf /var/lib/apt/lists/*
+      changed_when: false
+      ignore_errors: true
+
+    - name: redhat | yum clean all
+      raw: |
+        set -ex
+        yum clean all
+        rm -rf /var/cache/yum/*
+      changed_when: false
+      ignore_errors: true
+
+    - name: suse | zypper clean --all
+      raw: |
+        set -ex
+        zypper clean --all
+        rm -rf /var/cache/zypper/*
+      changed_when: false
       ignore_errors: true
