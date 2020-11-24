@@ -16,7 +16,7 @@
 
 namespace: alvistack
 name: vagrant-kubernetes
-description: Vagrant Box for Kubernetes
+description: Vagrant Box Packaging for Kubernetes
 
 version: VERSION
 readme: README.md

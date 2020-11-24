@@ -28,10 +28,11 @@
       changed_when: false
       ignore_errors: true
 
-    - name: debian | apt-get clean
+    - name: debian | apt-get -y autoclean
       raw: |
         set -ex
-        apt-get clean
+        apt-get -y autoremove
+        apt-get -y autoclean
         rm -rf /var/lib/apt/lists/*
       changed_when: false
       ignore_errors: true
