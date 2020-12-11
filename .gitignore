@@ -4,3 +4,5 @@
 *.rej
 *.retry
 __pycache__
+packer/*/output-*
+packer/*/packer-provisioner-*
