@@ -68,5 +68,9 @@
 	branch = develop
 [submodule "roles/containernetworking_plugins"]
 	path = roles/containernetworking_plugins
-	url = git@github.com:alvistack/ansible-role-containernetworking_plugins.git
+	url = https://github.com/alvistack/ansible-role-containernetworking_plugins.git
+	branch = develop
+[submodule "roles/fuse_overlayfs"]
+	path = roles/fuse_overlayfs
+	url = https://github.com/alvistack/ansible-role-fuse_overlayfs.git
 	branch = develop

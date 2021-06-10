@@ -120,6 +120,10 @@
 
     - name: include role
       include_role:
+        name: fuse_overlayfs
+
+    - name: include role
+      include_role:
         name: containers_common
 
     - name: include role
