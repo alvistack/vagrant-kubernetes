@@ -112,11 +112,11 @@
 
     - name: include role
       include_role:
-        name: cni_plugins
+        name: cri_tools
 
     - name: include role
       include_role:
-        name: cri_tools
+        name: containernetworking_plugins
 
     - name: include role
       include_role:
