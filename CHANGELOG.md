@@ -1,9 +1,11 @@
 # Vagrant Box Packaging for Kubernetes
 
-## 1.19.3-XalvistackY - TBC
+## YYYYMMDD.Y.Z - TBC
 
 ### Major Changes
 
+  - Support Kubernetes 1.20
+  - Support Kubernetes 1.19
   - Revamp with Packer
 
 ## 1.19.3-4alvistack1 - 2020-10-23

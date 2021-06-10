@@ -1,57 +1,56 @@
 # Vagrant Box Packaging for Kubernetes
 
-[![Travis](https://img.shields.io/travis/com/alvistack/vagrant-kubernetes.svg)](https://travis-ci.com/alvistack/vagrant-kubernetes)
+[![Gitlab pipeline status](https://img.shields.io/gitlab/pipeline/alvistack/vagrant-kubernetes/master)](https://gitlab.com/alvistack/vagrant-kubernetes/-/pipelines)
 [![GitHub release](https://img.shields.io/github/release/alvistack/vagrant-kubernetes.svg)](https://github.com/alvistack/vagrant-kubernetes/releases)
 [![GitHub license](https://img.shields.io/github/license/alvistack/vagrant-kubernetes.svg)](https://github.com/alvistack/vagrant-kubernetes/blob/master/LICENSE)
-[![Vagrant Box](https://img.shields.io/badge/vagrant-alvistack/kubernetes-blue.svg)](https://app.vagrantup.com/alvistack/boxes/kubernetes)
+\-[![Vagrant Box download](https://img.shields.io/badge/dynamic/json?label=alvistack%2Fkubernetes-1.20&query=%24.boxes%5B%3A1%5D.downloads&url=https%3A%2F%2Fapp.vagrantup.com%2Fapi%2Fv1%2Fsearch%3Fq%3Dalvistack%2Fkubernetes-1.20)](https://app.vagrantup.com/alvistack/boxes/kubernetes-1.20)
 
 Kubernetes (K8s) is an open-source system for automating deployment, scaling, and management of containerized applications.
 
 Learn more about Kubernetes: <https://kubernetes.io/>
 
-## Supported Tags and Respective `Vagrantfile` Links
+## Supported Boxes and Respective Packer Template Links
 
-  - [`1.19`, `latest`](https://github.com/alvistack/vagrant-kubernetes/blob/master/molecule/1.19/molecule.yml)
-  - [`1.18`](https://github.com/alvistack/vagrant-kubernetes/blob/master/molecule/1.18/molecule.yml)
+  - [`alvistack/kubernetes-1.20`](https://app.vagrantup.com/alvistack/boxes/kubernetes-1.20)
+      - [`libvirt`](https://github.com/alvistack/vagrant-kubernetes/blob/master/packer/libvirt-1.20/packer.json)
+      - [`virtualbox`](https://github.com/alvistack/vagrant-kubernetes/blob/master/packer/virtualbox-1.20/packer.json)
+  - [`alvistack/kubernetes-1.19`](https://app.vagrantup.com/alvistack/boxes/kubernetes-1.19)
+      - [`libvirt`](https://github.com/alvistack/vagrant-kubernetes/blob/master/packer/libvirt-1.19/packer.json)
+      - [`virtualbox`](https://github.com/alvistack/vagrant-kubernetes/blob/master/packer/virtualbox-1.19/packer.json)
 
 ## Overview
 
-This Vagrant box makes it easy to get an instance of Kubernetes up and running.
-
-Based on [Roboxes Vagrant Box](https://roboxes.org/) with:
-
-  - Ubuntu 18.04/20.04 based
-  - Base box running by [Vagrant Libvirt Provider](https://github.com/vagrant-libvirt/vagrant-libvirt)
-  - Provision by [Ansible](https://www.ansible.com/) and [Molecule Vagrant Plugin](https://github.com/ansible-community/molecule-vagrant)
+  - Packaging with [Packer](https://www.packer.io/)
+  - Support [Vagrant](https://www.vagrantup.com/) as default [Kubernetes custom executor](https://docs.gitlab.com/runner/executors/README.html)
+  - Support [Libvirt](https://libvirt.org/) with [vagrant-libvirt](https://github.com/vagrant-libvirt/vagrant-libvirt)
+  - Support [VirtualBox](https://www.virtualbox.org/)
+  - Support [Docker](https://www.docker.com/)
 
 ### Quick Start
 
-### Bootstrap Vagrant and Libvirt
+Once you have [Vagrant](https://www.vagrantup.com/docs/installation) and [VirtaulBox](https://www.virtualbox.org/) installed, run the following commands under your [project directory](https://learn.hashicorp.com/tutorials/vagrant/getting-started-project-setup?in=vagrant/getting-started):
 
-Start by cloning the repository, checkout the corresponding branch, then bootstrap Vagrant and Libvirt with provided helper script:
-
-    # GIT clone the development branch
-    git clone --branch develop https://github.com/alvistack/vagrant-kubernetes
-    cd vagrant-kubernetes
+    # Initialize Vagrant
+    vagrant init alvistack/kubernetes-1.20
     
-    # Bootstrap Vagrant and Libvirt
-    ./scripts/bootstrap-vagrant.sh
-
-### Start Vagrant Box
-
-How to use this box with Vagrant:
-
-    # Initializes the current directory to be a Vagrant environment
-    vagrant init alvistack/kubernetes
-    
-    # Creates and configures guest machines
+    # Start the virtual machine
     vagrant up
+    
+    # SSH into this machine
+    vagrant ssh
+    
+    # Terminate the virtual machine
+    vagrant destroy --force
 
 ## Versioning
 
-### `alvistack/kubernetes:<version>`
+### `YYYYMMDD.Y.Z`
 
-The version tags are rolling release rebuild by [Travis](https://travis-ci.com/alvistack/vagrant-kubernetes) in weekly basis. Thus using these tags will ensure you are running the latest packages provided by the base image project.
+Release tags could be find from [GitHub Release](https://github.com/alvistack/vagrant-kubernetes/releases) of this repository. Thus using these tags will ensure you are running the most up to date stable version of this image.
+
+### `YYYYMMDD.0.0`
+
+Version tags ended with `.0.0` are rolling release rebuild by [GitLab pipeline](https://gitlab.com/alvistack/vagrant-kubernetes/-/pipelines) in weekly basis. Thus using these tags will ensure you are running the latest packages provided by the base image project.
 
 ## License
 

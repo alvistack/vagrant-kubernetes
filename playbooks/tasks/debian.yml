@@ -1,0 +1,85 @@
+---
+
+# (c) Wong Hoi Sing Edison <hswong3i@pantarei-design.com>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: copy templates
+  template:
+    dest: "{{ item.dest }}"
+    src: "{{ item.src | default('./templates' + item.dest + '.j2') }}"
+    owner: "{{ item.owner | default('root') }}"
+    group: "{{ item.group | default('root') }}"
+    mode: "{{ item.mode | default('0644') }}"
+  loop:
+    - { dest: "/etc/apt/sources.list" }
+
+- name: apt-get update
+  apt:
+    update_cache: true
+  changed_when: false
+
+- name: apt-get install
+  apt:
+    name: "{{ item.name }}"
+    state: "{{ item.state }}"
+  loop: "{{ _apt }}"
+  register: result
+  until: result is succeeded
+
+- name: update /etc/default/grub
+  ini_file:
+    path: "/etc/default/grub"
+    section: ""
+    option: "{{ item.option }}"
+    value: "\"{{ item.value }}\""
+    mode: "0644"
+    no_extra_spaces: true
+    state: "present"
+  loop:
+    - { option: "GRUB_CMDLINE_LINUX", value: "net.ifnames=0 biosdevname=0" }
+    - { option: "GRUB_CMDLINE_LINUX_DEFAULT", value: "net.ifnames=0 biosdevname=0" }
+
+- name: update-grub
+  command: update-grub
+  changed_when: false
+  failed_when: false
+
+- name: update-initramfs -c -k all
+  command: update-initramfs -c -k all
+  changed_when: false
+  failed_when: false
+
+- name: apt-get install qemu-guest-agent
+  apt:
+    name: "{{ item.name }}"
+    state: "{{ item.state }}"
+  loop:
+    - { state: "latest", name: "qemu-guest-agent" }
+  when:
+    - ansible_virtualization_type | lower == 'kvm'
+  register: result
+  until: result is succeeded
+
+- name: sh VBoxLinuxAdditions.run
+  shell: |
+    set -euxo pipefail
+    export TMP_DIR="$(mktemp -d)"
+    mount -o loop /home/vagrant/VBoxGuestAdditions.iso $TMP_DIR
+    (echo "y" | sh $TMP_DIR/VBoxLinuxAdditions.run) || echo $?
+    umount $TMP_DIR
+    rm -rf $TMP_DIR /home/vagrant/VBoxGuestAdditions.iso
+  args:
+    executable: "/bin/bash"
+  when:
+    - ansible_virtualization_type | lower == 'virtualbox'

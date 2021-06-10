@@ -1,3 +1,11 @@
+[submodule "roles/ansible"]
+	path = roles/ansible
+	url = https://github.com/alvistack/ansible-role-ansible.git
+	branch = develop
+[submodule "roles/cloud_init"]
+	path = roles/cloud_init
+	url = https://github.com/alvistack/ansible-role-cloud_init.git
+	branch = develop
 [submodule "roles/cni_plugins"]
 	path = roles/cni_plugins
 	url = https://github.com/alvistack/ansible-role-cni_plugins.git
@@ -26,6 +34,10 @@
 	path = roles/etcd
 	url = https://github.com/alvistack/ansible-role-etcd.git
 	branch = develop
+[submodule "roles/kernel"]
+	path = roles/kernel
+	url = https://github.com/alvistack/ansible-role-kernel.git
+	branch = develop
 [submodule "roles/kubeadm"]
 	path = roles/kubeadm
 	url = https://github.com/alvistack/ansible-role-kubeadm.git
@@ -42,7 +54,19 @@
 	path = roles/kube_master
 	url = https://github.com/alvistack/ansible-role-kube_master.git
 	branch = develop
+[submodule "roles/locales"]
+	path = roles/locales
+	url = https://github.com/alvistack/ansible-role-locales.git
+	branch = develop
 [submodule "roles/python"]
 	path = roles/python
 	url = https://github.com/alvistack/ansible-role-python.git
+	branch = develop
+[submodule "roles/sshd"]
+	path = roles/sshd
+	url = https://github.com/alvistack/ansible-role-sshd.git
+	branch = develop
+[submodule "roles/timezone"]
+	path = roles/timezone
+	url = https://github.com/alvistack/ansible-role-timezone.git
 	branch = develop
