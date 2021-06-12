@@ -268,7 +268,6 @@
         set -euxo pipefail
         rm -rf /etc/etcd/*
         rm -rf /etc/kubernetes/*
-        rm -rf /root/.kube
         rm -rf /var/lib/etcd/*
         rm -rf /var/lib/kubelet/*
       args:
