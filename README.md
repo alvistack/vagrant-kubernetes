@@ -3,7 +3,7 @@
 [![Gitlab pipeline status](https://img.shields.io/gitlab/pipeline/alvistack/vagrant-kubernetes/master)](https://gitlab.com/alvistack/vagrant-kubernetes/-/pipelines)
 [![GitHub release](https://img.shields.io/github/release/alvistack/vagrant-kubernetes.svg)](https://github.com/alvistack/vagrant-kubernetes/releases)
 [![GitHub license](https://img.shields.io/github/license/alvistack/vagrant-kubernetes.svg)](https://github.com/alvistack/vagrant-kubernetes/blob/master/LICENSE)
-\-[![Vagrant Box download](https://img.shields.io/badge/dynamic/json?label=alvistack%2Fkubernetes-1.20&query=%24.boxes%5B%3A1%5D.downloads&url=https%3A%2F%2Fapp.vagrantup.com%2Fapi%2Fv1%2Fsearch%3Fq%3Dalvistack%2Fkubernetes-1.20)](https://app.vagrantup.com/alvistack/boxes/kubernetes-1.20)
+\-[![Vagrant Box download](https://img.shields.io/badge/dynamic/json?label=alvistack%2Fkubernetes-1.21&query=%24.boxes%5B%3A1%5D.downloads&url=https%3A%2F%2Fapp.vagrantup.com%2Fapi%2Fv1%2Fsearch%3Fq%3Dalvistack%2Fkubernetes-1.21)](https://app.vagrantup.com/alvistack/boxes/kubernetes-1.21)
 
 Kubernetes (K8s) is an open-source system for automating deployment, scaling, and management of containerized applications.
 
@@ -11,6 +11,9 @@ Learn more about Kubernetes: <https://kubernetes.io/>
 
 ## Supported Boxes and Respective Packer Template Links
 
+  - [`alvistack/kubernetes-1.21`](https://app.vagrantup.com/alvistack/boxes/kubernetes-1.21)
+      - [`libvirt`](https://github.com/alvistack/vagrant-kubernetes/blob/master/packer/libvirt-1.21/packer.json)
+      - [`virtualbox`](https://github.com/alvistack/vagrant-kubernetes/blob/master/packer/virtualbox-1.21/packer.json)
   - [`alvistack/kubernetes-1.20`](https://app.vagrantup.com/alvistack/boxes/kubernetes-1.20)
       - [`libvirt`](https://github.com/alvistack/vagrant-kubernetes/blob/master/packer/libvirt-1.20/packer.json)
       - [`virtualbox`](https://github.com/alvistack/vagrant-kubernetes/blob/master/packer/virtualbox-1.20/packer.json)
@@ -31,7 +34,7 @@ Learn more about Kubernetes: <https://kubernetes.io/>
 Once you have [Vagrant](https://www.vagrantup.com/docs/installation) and [VirtaulBox](https://www.virtualbox.org/) installed, run the following commands under your [project directory](https://learn.hashicorp.com/tutorials/vagrant/getting-started-project-setup?in=vagrant/getting-started):
 
     # Initialize Vagrant
-    vagrant init alvistack/kubernetes-1.20
+    vagrant init alvistack/kubernetes-1.21
     
     # Start the virtual machine
     vagrant up

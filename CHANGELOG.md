@@ -4,6 +4,7 @@
 
 ### Major Changes
 
+  - Support Kubernetes 1.21
   - Support Kubernetes 1.20
   - Support Kubernetes 1.19
   - Revamp with Packer
