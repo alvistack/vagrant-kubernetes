@@ -4,6 +4,7 @@
 
 ### Major Changes
 
+  - Upgrade minimal Ansible community package support to 4.1.0
   - Support Kubernetes 1.21
   - Support Kubernetes 1.20
   - Support Kubernetes 1.19
