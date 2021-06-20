@@ -17,9 +17,6 @@ Learn more about Kubernetes: <https://kubernetes.io/>
   - [`alvistack/kubernetes-1.20`](https://app.vagrantup.com/alvistack/boxes/kubernetes-1.20)
       - [`libvirt`](https://github.com/alvistack/vagrant-kubernetes/blob/master/packer/libvirt-1.20/packer.json)
       - [`virtualbox`](https://github.com/alvistack/vagrant-kubernetes/blob/master/packer/virtualbox-1.20/packer.json)
-  - [`alvistack/kubernetes-1.19`](https://app.vagrantup.com/alvistack/boxes/kubernetes-1.19)
-      - [`libvirt`](https://github.com/alvistack/vagrant-kubernetes/blob/master/packer/libvirt-1.19/packer.json)
-      - [`virtualbox`](https://github.com/alvistack/vagrant-kubernetes/blob/master/packer/virtualbox-1.19/packer.json)
 
 ## Overview
 
