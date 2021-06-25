@@ -112,6 +112,10 @@
 
     - name: include role
       include_role:
+        name: sonobuoy
+
+    - name: include role
+      include_role:
         name: cri_tools
 
     - name: include role
