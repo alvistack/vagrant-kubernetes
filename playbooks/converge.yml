@@ -148,11 +148,11 @@
 
     - name: include role
       include_role:
-        name: kubeadm
+        name: kubelet
 
     - name: include role
       include_role:
-        name: kubelet
+        name: kubeadm
 
     - name: include role
       include_role:
