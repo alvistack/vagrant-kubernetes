@@ -112,15 +112,7 @@
 
     - name: include role
       include_role:
-        name: sonobuoy
-
-    - name: include role
-      include_role:
-        name: cri_tools
-
-    - name: include role
-      include_role:
-        name: containernetworking_plugins
+        name: crun
 
     - name: include role
       include_role:
@@ -132,7 +124,7 @@
 
     - name: include role
       include_role:
-        name: crun
+        name: containernetworking_plugins
 
     - name: include role
       include_role:
@@ -141,6 +133,10 @@
     - name: include role
       include_role:
         name: cri_o
+
+    - name: include role
+      include_role:
+        name: cri_tools
 
     - name: include role
       include_role:
@@ -161,6 +157,10 @@
     - name: include role
       include_role:
         name: kube_master
+
+    - name: include role
+      include_role:
+        name: sonobuoy
 
     - name: systemctl stop kubelet.service
       service:
