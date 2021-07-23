@@ -140,15 +140,15 @@
 
     - name: include role
       include_role:
-        name: kubectl
+        name: kube_kubectl
 
     - name: include role
       include_role:
-        name: kubelet
+        name: kube_kubelet
 
     - name: include role
       include_role:
-        name: kubeadm
+        name: kube_kubeadm
 
     - name: include role
       include_role:
