@@ -34,10 +34,6 @@
 	path = roles/etcd
 	url = https://github.com/alvistack/ansible-role-etcd.git
 	branch = develop
-[submodule "roles/fuse_overlayfs"]
-	path = roles/fuse_overlayfs
-	url = https://github.com/alvistack/ansible-role-fuse_overlayfs.git
-	branch = develop
 [submodule "roles/kernel"]
 	path = roles/kernel
 	url = https://github.com/alvistack/ansible-role-kernel.git
