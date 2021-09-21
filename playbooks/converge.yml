@@ -183,8 +183,7 @@
     - name: rm -rf /etc/kubernetes/*
       shell: |
         set -euxo pipefail
-        crictl rm -af
-        rm -rf /etc/etcd/pki/*
+        rm -rf /etc/etcd/*
         rm -rf /etc/kubernetes/*
         rm -rf /var/lib/etcd/*
         rm -rf /var/lib/kubelet/*
