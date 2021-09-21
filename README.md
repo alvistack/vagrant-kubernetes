@@ -1,5 +1,7 @@
 # Vagrant Box Packaging for Kubernetes
 
+<img src="/alvistack.svg" width="75" alt="AlviStack">
+
 [![Gitlab pipeline status](https://img.shields.io/gitlab/pipeline/alvistack/vagrant-kubernetes/master)](https://gitlab.com/alvistack/vagrant-kubernetes/-/pipelines)
 [![GitHub release](https://img.shields.io/github/release/alvistack/vagrant-kubernetes.svg)](https://github.com/alvistack/vagrant-kubernetes/releases)
 [![GitHub license](https://img.shields.io/github/license/alvistack/vagrant-kubernetes.svg)](https://github.com/alvistack/vagrant-kubernetes/blob/master/LICENSE) -[![Vagrant Box download](https://img.shields.io/badge/dynamic/json?label=alvistack%2Fkubernetes-1.22&query=%24.boxes%5B%3A1%5D.downloads&url=https%3A%2F%2Fapp.vagrantup.com%2Fapi%2Fv1%2Fsearch%3Fq%3Dalvistack%2Fkubernetes-1.22)](https://app.vagrantup.com/alvistack/boxes/kubernetes-1.22)
