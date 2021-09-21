@@ -166,6 +166,7 @@
       loop:
         - { name: "kubelet.service" }
         - { name: "etcd.service" }
+        - { name: "crio.service" }
       changed_when: false
       failed_when: false
 
@@ -183,8 +184,9 @@
     - name: rm -rf /etc/kubernetes/*
       shell: |
         set -euxo pipefail
-        rm -rf /etc/etcd/*
+        rm -rf /etc/etcd/pki/*
         rm -rf /etc/kubernetes/*
+        rm -rf /var/lib/containers/*
         rm -rf /var/lib/etcd/*
         rm -rf /var/lib/kubelet/*
       args:
