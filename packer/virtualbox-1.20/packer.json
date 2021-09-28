@@ -77,6 +77,11 @@
   "provisioners": [
     {
       "galaxy_file": "./ansible-galaxy-requirements.yml",
+      "groups": [
+        "ansible",
+        "etcd",
+        "kube_master"
+      ],
       "inventory_directory": "./",
       "playbook_file": "./packer.yml",
       "type": "ansible",
