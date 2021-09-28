@@ -1,1 +1,14 @@
-localhost ansible_connection=local
+[all]
+localhost ansible_host=127.0.0.1 ansible_connection=local
+
+[ansible]
+localhost
+
+[etcd]
+localhost
+
+[kube_master]
+localhost
+
+[kube_node]
+localhost

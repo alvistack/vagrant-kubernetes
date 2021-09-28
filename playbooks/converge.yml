@@ -95,21 +95,6 @@
       changed_when: false
       failed_when: false
 
-    - name: group by
-      group_by:
-        key: "{{ item.key }}"
-      loop:
-        - { key: "etcd" }
-        - { key: "kube_master" }
-
-    - name: add host
-      add_host:
-        hostname: "{{ item.hostname }}"
-        groups: "{{ item.groups }}"
-      loop:
-        - { hostname: "{{ inventory_hostname }}", groups: "etcd" }
-        - { hostname: "{{ inventory_hostname }}", groups: "kube_master" }
-
     - name: include role
       include_role:
         name: crun

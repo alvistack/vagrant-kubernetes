@@ -71,21 +71,10 @@
       loop:
         - { dest: "/root/.ssh/authorized_keys", mode: "0600" }
 
-    - name: group by
-      group_by:
-        key: "{{ item.key }}"
-      loop:
-        - { key: "etcd" }
-        - { key: "kube_master" }
-
-    - name: add host
-      add_host:
-        hostname: "{{ item.hostname }}"
-        groups: "{{ item.groups }}"
-      loop:
-        - { hostname: "{{ inventory_hostname }}", groups: "etcd" }
-        - { hostname: "{{ inventory_hostname }}", groups: "kube_master" }
-
+- hosts: kube_master:kube_node
+  remote_user: root
+  become: true
+  tasks:
     - name: include role
       include_role:
         name: cri_o
@@ -94,10 +83,62 @@
       include_role:
         name: kube_kubelet
 
+- hosts: etcd
+  remote_user: root
+  become: true
+  tasks:
     - name: include role
       include_role:
         name: etcd
 
+- hosts: kube_master
+  remote_user: root
+  become: true
+  tasks:
     - name: include role
       include_role:
         name: kube_master
+
+- hosts: kube_node:!kube_master
+  remote_user: root
+  become: true
+  tasks:
+    - name: include role
+      include_role:
+        name: kube_node
+
+- hosts: ansible
+  remote_user: root
+  become: true
+  tasks:
+    - name: include role
+      include_role:
+        name: sonobuoy
+
+    - name: include role
+      include_role:
+        name: kube_kubectl
+
+    - name: base64 encode
+      shell: |
+        set -euxo pipefail
+        tar zcfP - {{ _params | join(' ') }} | base64 -w 0
+      vars:
+        _params:
+          - "/etc/etcd/pki"
+          - "/etc/kubernetes/admin.conf"
+          - "/etc/kubernetes/pki"
+      args:
+        executable: "/bin/bash"
+      delegate_to: "{{ groups['kube_master'][0] }}"
+      register: base64_encode_result
+      changed_when: base64_encode_result is not succeeded
+
+    - name: base64 decode
+      shell: |
+        set -euxo pipefail
+        echo -n {{ base64_encode_result.stdout | quote }} | base64 -d | tar zx -C /
+      args:
+        executable: "/bin/bash"
+      register: base64_decode_result
+      changed_when: base64_decode_result is not succeeded
