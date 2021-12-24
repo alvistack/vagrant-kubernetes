@@ -4,7 +4,7 @@
 
 [![Gitlab pipeline status](https://img.shields.io/gitlab/pipeline/alvistack/vagrant-kubernetes/master)](https://gitlab.com/alvistack/vagrant-kubernetes/-/pipelines)
 [![GitHub release](https://img.shields.io/github/release/alvistack/vagrant-kubernetes.svg)](https://github.com/alvistack/vagrant-kubernetes/releases)
-[![GitHub license](https://img.shields.io/github/license/alvistack/vagrant-kubernetes.svg)](https://github.com/alvistack/vagrant-kubernetes/blob/master/LICENSE) -[![Vagrant Box download](https://img.shields.io/badge/dynamic/json?label=alvistack%2Fkubernetes-1.22&query=%24.boxes%5B%3A1%5D.downloads&url=https%3A%2F%2Fapp.vagrantup.com%2Fapi%2Fv1%2Fsearch%3Fq%3Dalvistack%2Fkubernetes-1.22)](https://app.vagrantup.com/alvistack/boxes/kubernetes-1.22)
+[![GitHub license](https://img.shields.io/github/license/alvistack/vagrant-kubernetes.svg)](https://github.com/alvistack/vagrant-kubernetes/blob/master/LICENSE) -[![Vagrant Box download](https://img.shields.io/badge/dynamic/json?label=alvistack%2Fkubernetes-1.23&query=%24.boxes%5B%3A1%5D.downloads&url=https%3A%2F%2Fapp.vagrantup.com%2Fapi%2Fv1%2Fsearch%3Fq%3Dalvistack%2Fkubernetes-1.23)](https://app.vagrantup.com/alvistack/boxes/kubernetes-1.23)
 
 Kubernetes (K8s) is an open-source system for automating deployment, scaling, and management of containerized applications.
 
@@ -12,6 +12,9 @@ Learn more about Kubernetes: <https://kubernetes.io/>
 
 ## Supported Boxes and Respective Packer Template Links
 
+  - [`alvistack/kubernetes-1.23`](https://app.vagrantup.com/alvistack/boxes/kubernetes-1.23)
+      - [`libvirt`](https://github.com/alvistack/vagrant-kubernetes/blob/master/packer/libvirt-1.23/packer.json)
+      - [`virtualbox`](https://github.com/alvistack/vagrant-kubernetes/blob/master/packer/virtualbox-1.23/packer.json)
   - [`alvistack/kubernetes-1.22`](https://app.vagrantup.com/alvistack/boxes/kubernetes-1.22)
       - [`libvirt`](https://github.com/alvistack/vagrant-kubernetes/blob/master/packer/libvirt-1.22/packer.json)
       - [`virtualbox`](https://github.com/alvistack/vagrant-kubernetes/blob/master/packer/virtualbox-1.22/packer.json)
@@ -37,8 +40,8 @@ Once you have [Vagrant](https://www.vagrantup.com/docs/installation) and [Virtau
     # Initialize Vagrant
     cat > Vagrantfile <<-EOF
     Vagrant.configure("2") do |config|
-      config.vm.hostname = "kubernetes-1.22"
-      config.vm.box = "alvistack/kubernetes-1.22"
+      config.vm.hostname = "kubernetes-1.23"
+      config.vm.box = "alvistack/kubernetes-1.23"
 
       config.vm.provider :libvirt do |libvirt|
         libvirt.cpu_mode = "host-model"
