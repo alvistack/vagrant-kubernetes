@@ -19,10 +19,10 @@
   become: true
   tasks:
     - name: include default variables
-      include_vars: "./vars/main.yml"
+      ansible.builtin.include_vars: "./vars/main.yml"
 
     - name: include release specific variables
-      include_vars: "{{ _loop_var }}"
+      ansible.builtin.include_vars: "{{ _loop_var }}"
       loop: "{{ query('first_found', _params) }}"
       loop_control:
         loop_var: _loop_var
@@ -61,90 +61,90 @@
       include_tasks: "./tasks/main.yml"
 
     - name: include role
-      include_role:
+      ansible.builtin.include_role:
         name: python
 
     - name: include role
-      include_role:
+      ansible.builtin.include_role:
         name: ansible
 
     - name: include role
-      include_role:
+      ansible.builtin.include_role:
         name: locales
 
     - name: include role
-      include_role:
+      ansible.builtin.include_role:
         name: timezone
 
     - name: include role
-      include_role:
+      ansible.builtin.include_role:
         name: kernel
 
     - name: include role
-      include_role:
+      ansible.builtin.include_role:
         name: cloud_init
 
     - name: include role
-      include_role:
+      ansible.builtin.include_role:
         name: sshd
 
     - name: rm -rf /etc/ssh/ssh_host_*
-      raw: |
+      ansible.builtin.raw: |
         set -eu
         rm -rf /etc/ssh/ssh_host_*
       changed_when: false
       failed_when: false
 
     - name: include role
-      include_role:
+      ansible.builtin.include_role:
         name: crun
 
     - name: include role
-      include_role:
+      ansible.builtin.include_role:
         name: containers_common
 
     - name: include role
-      include_role:
+      ansible.builtin.include_role:
         name: containernetworking_plugins
 
     - name: include role
-      include_role:
+      ansible.builtin.include_role:
         name: conmon
 
     - name: include role
-      include_role:
+      ansible.builtin.include_role:
         name: cri_o
 
     - name: include role
-      include_role:
+      ansible.builtin.include_role:
         name: cri_tools
 
     - name: include role
-      include_role:
+      ansible.builtin.include_role:
         name: kube_kubectl
 
     - name: include role
-      include_role:
+      ansible.builtin.include_role:
         name: kube_kubelet
 
     - name: include role
-      include_role:
+      ansible.builtin.include_role:
         name: kube_kubeadm
 
     - name: include role
-      include_role:
+      ansible.builtin.include_role:
         name: etcd
 
     - name: include role
-      include_role:
+      ansible.builtin.include_role:
         name: kube_master
 
     - name: include role
-      include_role:
+      ansible.builtin.include_role:
         name: sonobuoy
 
     - name: systemctl stop kubelet.service
-      service:
+      ansible.builtin.service:
         name: "{{ item.name }}"
         state: "stopped"
         enabled: false
@@ -155,7 +155,7 @@
       failed_when: false
 
     - name: crictl rm --all --force
-      shell: |
+      ansible.builtin.shell: |
         set -euxo pipefail
         crictl rm --all --force
         umount --all --force --type fuse.fuse-overlayfs || echo $?
@@ -166,7 +166,7 @@
       failed_when: false
 
     - name: rm -rf /etc/kubernetes/*
-      shell: |
+      ansible.builtin.shell: |
         set -euxo pipefail
         rm -rf /etc/etcd/*
         rm -rf /etc/kubernetes/*
