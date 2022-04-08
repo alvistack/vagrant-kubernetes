@@ -41,7 +41,7 @@ Once you have [Vagrant](https://www.vagrantup.com/docs/installation) and [Virtau
       config.vm.box = "alvistack/kubernetes-1.23"
     
       config.vm.provider :libvirt do |libvirt|
-        libvirt.cpu_mode = "host-model"
+        libvirt.cpu_mode = "host-passthrough"
         libvirt.cpus = 2
         libvirt.disk_bus = "virtio"
         libvirt.disk_driver :cache => "writeback"
