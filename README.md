@@ -57,6 +57,7 @@ Once you have [Vagrant](https://www.vagrantup.com/docs/installation) and [Virtau
       config.vm.provider :virtualbox do |virtualbox|
         virtualbox.cpus = 2
         virtualbox.memory = 8192
+        virtualbox.customize ["modifyvm", :id, "--cpu-profile", "host"]
         virtualbox.customize ["modifyvm", :id, "--nested-hw-virt", "on"]
       end
     end
