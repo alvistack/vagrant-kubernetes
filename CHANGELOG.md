@@ -4,6 +4,7 @@
 
 ### Major Changes
 
+  - Support Ansible community package 5.7.0
   - Ubuntu 22.04 based
   - Support RHEL 9
   - Support CentOS 9 Stream
