@@ -77,11 +77,11 @@
   tasks:
     - name: include role
       ansible.builtin.include_role:
-        name: cri_o
+        name: alvistack.cri_o
 
     - name: include role
       ansible.builtin.include_role:
-        name: kube_kubelet
+        name: alvistack.kube_kubelet
 
 - hosts: etcd
   remote_user: root
@@ -89,7 +89,7 @@
   tasks:
     - name: include role
       ansible.builtin.include_role:
-        name: etcd
+        name: alvistack.etcd
 
 - hosts: kube_master
   remote_user: root
@@ -97,7 +97,7 @@
   tasks:
     - name: include role
       ansible.builtin.include_role:
-        name: kube_master
+        name: alvistack.kube_master
 
 - hosts: kube_node:!kube_master
   remote_user: root
@@ -105,7 +105,7 @@
   tasks:
     - name: include role
       ansible.builtin.include_role:
-        name: kube_node
+        name: alvistack.kube_node
 
 - hosts: ansible
   remote_user: root
@@ -113,11 +113,11 @@
   tasks:
     - name: include role
       ansible.builtin.include_role:
-        name: sonobuoy
+        name: alvistack.sonobuoy
 
     - name: include role
       ansible.builtin.include_role:
-        name: kube_kubectl
+        name: alvistack.kube_kubectl
 
     - name: base64 encode
       ansible.builtin.shell: |

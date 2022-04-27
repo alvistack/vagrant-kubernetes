@@ -4,6 +4,7 @@
 
 ### Major Changes
 
+  - Rename Ansible Role with FQCN
   - Support Ansible community package 5.7.0
   - Ubuntu 22.04 based
   - Support RHEL 9
