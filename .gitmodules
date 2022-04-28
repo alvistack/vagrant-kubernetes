@@ -42,6 +42,10 @@
 	path = roles/alvistack.kube_addon_manager
 	url = https://github.com/alvistack/ansible-role-kube_addon_manager.git
 	branch = develop
+[submodule "roles/alvistack.kube_flannel"]
+	path = roles/alvistack.kube_flannel
+	url = https://github.com/alvistack/ansible-role-kube_flannel.git
+	branch = develop
 [submodule "roles/alvistack.kube_kubeadm"]
 	path = roles/alvistack.kube_kubeadm
 	url = https://github.com/alvistack/ansible-role-kube_kubeadm.git
