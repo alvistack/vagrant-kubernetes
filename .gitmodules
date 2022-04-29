@@ -2,6 +2,10 @@
 	path = roles/alvistack.ansible
 	url = https://github.com/alvistack/ansible-role-ansible.git
 	branch = develop
+[submodule "roles/alvistack.cilium"]
+	path = roles/alvistack.cilium
+	url = https://github.com/alvistack/ansible-role-cilium.git
+	branch = develop
 [submodule "roles/alvistack.cloud_init"]
 	path = roles/alvistack.cloud_init
 	url = https://github.com/alvistack/ansible-role-cloud_init.git
@@ -41,6 +45,10 @@
 [submodule "roles/alvistack.kube_addon_manager"]
 	path = roles/alvistack.kube_addon_manager
 	url = https://github.com/alvistack/ansible-role-kube_addon_manager.git
+	branch = develop
+[submodule "roles/alvistack.kube_cilium"]
+	path = roles/alvistack.kube_cilium
+	url = https://github.com/alvistack/ansible-role-kube_cilium.git
 	branch = develop
 [submodule "roles/alvistack.kube_flannel"]
 	path = roles/alvistack.kube_flannel
