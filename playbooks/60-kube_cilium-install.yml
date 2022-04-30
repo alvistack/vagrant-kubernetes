@@ -20,7 +20,8 @@
   tasks:
     - name: include role
       ansible.builtin.include_role:
-        name: alvistack.cilium
+        name: alvistack.kube_addon_manager
+      tags: alvistack.kube_addon_manager
 
     - name: include role
       ansible.builtin.include_role:
