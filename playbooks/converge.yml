@@ -62,31 +62,31 @@
 
     - name: include role
       ansible.builtin.include_role:
-        name: alvistack.python
+        name: python
 
     - name: include role
       ansible.builtin.include_role:
-        name: alvistack.ansible
+        name: ansible
 
     - name: include role
       ansible.builtin.include_role:
-        name: alvistack.locales
+        name: locales
 
     - name: include role
       ansible.builtin.include_role:
-        name: alvistack.timezone
+        name: timezone
 
     - name: include role
       ansible.builtin.include_role:
-        name: alvistack.kernel
+        name: kernel
 
     - name: include role
       ansible.builtin.include_role:
-        name: alvistack.cloud_init
+        name: cloud_init
 
     - name: include role
       ansible.builtin.include_role:
-        name: alvistack.sshd
+        name: sshd
 
     - name: rm -rf /etc/ssh/ssh_host_*
       ansible.builtin.raw: |
@@ -97,51 +97,51 @@
 
     - name: include role
       ansible.builtin.include_role:
-        name: alvistack.crun
+        name: crun
 
     - name: include role
       ansible.builtin.include_role:
-        name: alvistack.containers_common
+        name: containers_common
 
     - name: include role
       ansible.builtin.include_role:
-        name: alvistack.containernetworking_plugins
+        name: containernetworking_plugins
 
     - name: include role
       ansible.builtin.include_role:
-        name: alvistack.conmon
+        name: conmon
 
     - name: include role
       ansible.builtin.include_role:
-        name: alvistack.cri_o
+        name: cri_o
 
     - name: include role
       ansible.builtin.include_role:
-        name: alvistack.cri_tools
+        name: cri_tools
 
     - name: include role
       ansible.builtin.include_role:
-        name: alvistack.kube_kubectl
+        name: kube_kubectl
 
     - name: include role
       ansible.builtin.include_role:
-        name: alvistack.kube_kubelet
+        name: kube_kubelet
 
     - name: include role
       ansible.builtin.include_role:
-        name: alvistack.kube_kubeadm
+        name: kube_kubeadm
 
     - name: include role
       ansible.builtin.include_role:
-        name: alvistack.etcd
+        name: etcd
 
     - name: include role
       ansible.builtin.include_role:
-        name: alvistack.kube_master
+        name: kube_master
 
     - name: include role
       ansible.builtin.include_role:
-        name: alvistack.sonobuoy
+        name: sonobuoy
 
     - name: systemctl stop kubelet.service
       ansible.builtin.service:
