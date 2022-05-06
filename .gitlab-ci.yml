@@ -112,6 +112,7 @@
     export VAGRANT_HOME="$CI_PROJECT_DIR"
     export _BOX="$(echo $CI_PROJECT_NAME | sed "s/^vagrant-//g")-$_PACKER_BUILDER_VERSION"
     export _PROVIDER="$_PACKER_BUILDER_PROVIDER"
+    sudo -E vagrant plugin install vagrant-libvirt
     sudo -E vagrant box add \
       --name $_BOX \
       --provider $_PROVIDER \
