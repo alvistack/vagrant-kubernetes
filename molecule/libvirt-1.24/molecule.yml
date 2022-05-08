@@ -32,7 +32,6 @@ platforms:
       - "disk_driver :cache => 'writeback'"
       - "storage :file, bus: 'virtio', cache: 'writeback'"
     instance_raw_config_args:
-      - "vm.box_check_update = false"
       - "vm.provision :shell, inline: 'systemctl stop guestfs-firstboot.service'"
       - "vm.provision :shell, inline: 'systemctl disable guestfs-firstboot.service'"
     groups:
@@ -50,7 +49,6 @@ platforms:
       - "disk_driver :cache => 'writeback'"
       - "storage :file, bus: 'virtio', cache: 'writeback'"
     instance_raw_config_args:
-      - "vm.box_check_update = false"
       - "vm.provision :shell, inline: 'systemctl stop guestfs-firstboot.service'"
       - "vm.provision :shell, inline: 'systemctl disable guestfs-firstboot.service'"
     groups:
@@ -68,7 +66,6 @@ platforms:
       - "disk_driver :cache => 'writeback'"
       - "storage :file, bus: 'virtio', cache: 'writeback'"
     instance_raw_config_args:
-      - "vm.box_check_update = false"
       - "vm.provision :shell, inline: 'systemctl stop guestfs-firstboot.service'"
       - "vm.provision :shell, inline: 'systemctl disable guestfs-firstboot.service'"
     groups:

@@ -122,6 +122,7 @@
 .script-molecule-test: &script-molecule-test
   - |
     export VAGRANT_HOME="$CI_BUILDS_DIR"
+    export VAGRANT_EXPERIMENTAL="1"
     export MOLECULE_INSTANCE_NAME="$(pwgen -1AB 12)"
     sudo -E molecule test -s $_PACKER_BUILDER_PROVIDER-$_PACKER_BUILDER_VERSION
 
