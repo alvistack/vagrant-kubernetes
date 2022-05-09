@@ -20,7 +20,7 @@ driver:
     name: virtualbox
   provision: true
 platforms:
-  - name: ${MOLECULE_INSTANCE_NAME}-1
+  - name: ${_MOLECULE_INSTANCE_NAME}-1
     box: alvistack/kubernetes-1.22
     cpu: 2
     memory: 8192

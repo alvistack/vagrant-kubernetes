@@ -20,7 +20,7 @@ driver:
     name: libvirt
   provision: true
 platforms:
-  - name: ${MOLECULE_INSTANCE_NAME}-1
+  - name: ${_MOLECULE_INSTANCE_NAME}-1
     box: alvistack/kubernetes-1.22
     cpu: 2
     memory: 8192
@@ -37,7 +37,7 @@ platforms:
     groups:
       - etcd
       - kube_master
-  - name: ${MOLECULE_INSTANCE_NAME}-2
+  - name: ${_MOLECULE_INSTANCE_NAME}-2
     box: alvistack/kubernetes-1.22
     cpu: 2
     memory: 8192
@@ -54,7 +54,7 @@ platforms:
     groups:
       - etcd
       - kube_master
-  - name: ${MOLECULE_INSTANCE_NAME}-3
+  - name: ${_MOLECULE_INSTANCE_NAME}-3
     box: alvistack/kubernetes-1.22
     cpu: 2
     memory: 8192

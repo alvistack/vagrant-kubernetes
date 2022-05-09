@@ -123,7 +123,7 @@
   - |
     export VAGRANT_HOME="$CI_BUILDS_DIR"
     export VAGRANT_EXPERIMENTAL="1"
-    export MOLECULE_INSTANCE_NAME="$(pwgen -1AB 12)"
+    export _MOLECULE_INSTANCE_NAME="$(pwgen -1AB 12)"
     sudo -E molecule test -s $_PACKER_BUILDER_PROVIDER-$_PACKER_BUILDER_VERSION
 
 .script-vagrant-cloud-provider-upload: &script-vagrant-cloud-provider-upload
