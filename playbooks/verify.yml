@@ -142,3 +142,26 @@
         executable: "/bin/bash"
       register: base64_decode_result
       changed_when: base64_decode_result is not succeeded
+
+- hosts: kube_master
+  remote_user: root
+  become: true
+  tasks:
+    - name: kubectl version
+      ansible.builtin.command: kubectl version
+      register: result
+      changed_when: result is not succeeded
+ 
+    - name: kubectl get --raw='/readyz?verbose'
+      ansible.builtin.shell: |
+        set -euxo pipefail
+        kubectl get --raw='/readyz?verbose' | grep 'check passed'
+      args:
+        executable: "/bin/bash"
+      loop: "{{ ansible_play_hosts }}"
+      delegate_to: "{{ item }}"
+      run_once: true
+      register: result
+      changed_when: result is not succeeded
+      until: result is succeeded
+      retries: 60

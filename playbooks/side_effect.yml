@@ -1,0 +1,53 @@
+---
+
+# (c) Wong Hoi Sing Edison <hswong3i@pantarei-design.com>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- hosts: all
+  remote_user: root
+  become: true
+  tasks:
+    - name: systemctl stop kubelet.service
+      ansible.builtin.service:
+        name: "{{ item.name }}"
+        state: "stopped"
+        enabled: false
+      loop:
+        - { name: "kubelet.service" }
+        - { name: "etcd.service" }
+      changed_when: false
+      failed_when: false
+
+    - name: crictl rm --all --force
+      ansible.builtin.shell: |
+        set -euxo pipefail
+        crictl rm --all --force
+        umount --all --force --type fuse.fuse-overlayfs || echo $?
+        umount --all --force --type tmpfs || echo $?
+      args:
+        executable: "/bin/bash"
+      changed_when: false
+      failed_when: false
+
+    - name: rm -rf /etc/kubernetes/*
+      ansible.builtin.shell: |
+        set -euxo pipefail
+        rm -rf /etc/etcd/*
+        rm -rf /etc/kubernetes/*
+        rm -rf /var/lib/etcd/*
+        rm -rf /var/lib/kubelet/*
+      args:
+        executable: "/bin/bash"
+      changed_when: false
+      failed_when: false
