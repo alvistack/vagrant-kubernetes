@@ -36,34 +36,36 @@ Once you have [Vagrant](https://www.vagrantup.com/docs/installation) and [Virtau
 
     # Initialize Vagrant
     cat > Vagrantfile <<-EOF
-    Vagrant.configure("2") do |config|
-      config.vm.hostname = "kubernetes-1.24"
-      config.vm.box = "alvistack/kubernetes-1.24"
+    Vagrant.configure('2') do |config|
+      config.vm.hostname = 'kubernetes-1.24'
+      config.vm.box = 'alvistack/kubernetes-1.24'
     
       config.vm.provider :libvirt do |libvirt|
-        libvirt.cpu_mode = "host-passthrough"
+        libvirt.cpu_mode = 'host-passthrough'
         libvirt.cpus = 2
-        libvirt.disk_bus = "virtio"
-        libvirt.disk_driver :cache => "writeback"
-        libvirt.driver = "kvm"
+        libvirt.disk_bus = 'virtio'
+        libvirt.disk_driver :cache => 'writeback'
+        libvirt.driver = 'kvm'
         libvirt.memory = 8192
-        libvirt.memorybacking :access, :mode => "shared"
+        libvirt.memorybacking :access, :mode => 'shared'
         libvirt.nested = true
-        libvirt.nic_model_type = "virtio"
-        libvirt.storage :file, bus: "virtio", cache: "writeback"
-        libvirt.video_type = "virtio"
+        libvirt.nic_model_type = 'virtio'
+        libvirt.storage :file, bus: 'virtio', cache: 'writeback'
+        libvirt.video_type = 'virtio'
       end
     
       config.vm.provider :virtualbox do |virtualbox|
+        config.vm.disk :disk, name: 'sdb', size: '10GB'
         virtualbox.cpus = 2
+        virtualbox.customize ['modifyvm', :id, '--cpu-profile', 'host']
+        virtualbox.customize ['modifyvm', :id, '--nested-hw-virt', 'on']
         virtualbox.memory = 8192
-        virtualbox.customize ["modifyvm", :id, "--cpu-profile", "host"]
-        virtualbox.customize ["modifyvm", :id, "--nested-hw-virt", "on"]
       end
     end
     EOF
     
     # Start the virtual machine
+    export VAGRANT_EXPERIMENTAL='1'
     vagrant up
     
     # SSH into this machine
