@@ -4,6 +4,12 @@
 
 ### Major Changes
 
+## 20220520.1.1 - 2022-05-20
+
+### Major Changes
+
+  - Support Ansible community package 5.8.0
+
   - Remove Fedora 34 support
 
   - Cilium as default CNI
