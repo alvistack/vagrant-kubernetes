@@ -74,6 +74,15 @@ Once you have [Vagrant](https://www.vagrantup.com/docs/installation) and [Virtau
     # Terminate the virtual machine
     vagrant destroy --force
 
+### Molecule
+
+You could also run our [Molecule](https://molecule.readthedocs.io/en/stable/) test cases if you have [Vagrant](https://www.vagrantup.com/) and [Libvirt](https://libvirt.org/) installed, e.g.
+
+    # Run Molecule on Kubernetes 1.24
+    molecule converge -s libvirt-1.24
+
+Please refer to [.gitlab-ci.yml](.gitlab-ci.yml) for more information on running Molecule.
+
 ## Versioning
 
 ### `YYYYMMDD.Y.Z`

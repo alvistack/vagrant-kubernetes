@@ -104,6 +104,10 @@
       ansible.builtin.include_role:
         name: conmon
 
+- hosts: kube_master:kube_node
+  remote_user: root
+  become: true
+  tasks:
     - name: include role
       ansible.builtin.include_role:
         name: cri_o
@@ -124,14 +128,26 @@
       ansible.builtin.include_role:
         name: kube_kubeadm
 
+- hosts: etcd
+  remote_user: root
+  become: true
+  tasks:
     - name: include role
       ansible.builtin.include_role:
         name: etcd
 
+- hosts: kube_master
+  remote_user: root
+  become: true
+  tasks:
     - name: include role
       ansible.builtin.include_role:
         name: kube_master
 
+- hosts: ansible
+  remote_user: root
+  become: true
+  tasks:
     - name: include role
       ansible.builtin.include_role:
         name: sonobuoy
