@@ -13,22 +13,26 @@ Learn more about Kubernetes: <https://kubernetes.io/>
 ## Supported Boxes and Respective Packer Template Links
 
   - [`alvistack/kubernetes-1.24`](https://app.vagrantup.com/alvistack/boxes/kubernetes-1.24)
-      - [`libvirt`](https://github.com/alvistack/vagrant-kubernetes/blob/master/packer/libvirt-1.24/packer.json)
-      - [`virtualbox`](https://github.com/alvistack/vagrant-kubernetes/blob/master/packer/virtualbox-1.24/packer.json)
+      - [`packer/kubernetes-1.24-libvirt/packer.json`](https://github.com/alvistack/vagrant-kubernetes/blob/master/packer/kubernetes-1.24-libvirt/packer.json)
+      - [`packer/kubernetes-1.24-virtualbox/packer.json`](https://github.com/alvistack/vagrant-kubernetes/blob/master/packer/kubernetes-1.24-virtualbox/packer.json)
   - [`alvistack/kubernetes-1.23`](https://app.vagrantup.com/alvistack/boxes/kubernetes-1.23)
-      - [`libvirt`](https://github.com/alvistack/vagrant-kubernetes/blob/master/packer/libvirt-1.23/packer.json)
-      - [`virtualbox`](https://github.com/alvistack/vagrant-kubernetes/blob/master/packer/virtualbox-1.23/packer.json)
+      - [`packer/kubernetes-1.23-libvirt/packer.json`](https://github.com/alvistack/vagrant-kubernetes/blob/master/packer/kubernetes-1.23-libvirt/packer.json)
+      - [`packer/kubernetes-1.23-virtualbox/packer.json`](https://github.com/alvistack/vagrant-kubernetes/blob/master/packer/kubernetes-1.23-virtualbox/packer.json)
   - [`alvistack/kubernetes-1.22`](https://app.vagrantup.com/alvistack/boxes/kubernetes-1.22)
-      - [`libvirt`](https://github.com/alvistack/vagrant-kubernetes/blob/master/packer/libvirt-1.22/packer.json)
-      - [`virtualbox`](https://github.com/alvistack/vagrant-kubernetes/blob/master/packer/virtualbox-1.22/packer.json)
+      - [`packer/kubernetes-1.22-libvirt/packer.json`](https://github.com/alvistack/vagrant-kubernetes/blob/master/packer/kubernetes-1.22-libvirt/packer.json)
+      - [`packer/kubernetes-1.22-virtualbox/packer.json`](https://github.com/alvistack/vagrant-kubernetes/blob/master/packer/kubernetes-1.22-virtualbox/packer.json)
 
 ## Overview
 
   - Packaging with [Packer](https://www.packer.io/)
-  - Support [Vagrant](https://www.vagrantup.com/) as default [Kubernetes custom executor](https://docs.gitlab.com/runner/executors/README.html)
-  - Support [Libvirt](https://libvirt.org/) with [vagrant-libvirt](https://github.com/vagrant-libvirt/vagrant-libvirt)
-  - Support [VirtualBox](https://www.virtualbox.org/)
-  - Support [Docker](https://www.docker.com/)
+  - Minimal [Vagrant base box implementation](https://www.vagrantup.com/docs/boxes/base)
+  - Support [QEMU Guest Agent](https://wiki.qemu.org/Features/GuestAgent)
+  - Support [VirtualBox Guest Additions](https://www.virtualbox.org/manual/ch04.html)
+  - Support [Vagrant synced folder with rsync](https://www.vagrantup.com/docs/synced-folders/rsync)
+  - Support [Vagrant provisioner with Ansible](https://www.vagrantup.com/docs/provisioning/ansible)
+  - Standardize disk partition with GPT
+  - Standardize file system mount with UUID
+  - Standardize network interface with `eth0`
 
 ### Quick Start
 
@@ -79,7 +83,7 @@ Once you have [Vagrant](https://www.vagrantup.com/docs/installation) and [Virtau
 You could also run our [Molecule](https://molecule.readthedocs.io/en/stable/) test cases if you have [Vagrant](https://www.vagrantup.com/) and [Libvirt](https://libvirt.org/) installed, e.g.
 
     # Run Molecule on Kubernetes 1.24
-    molecule converge -s libvirt-1.24
+    molecule converge -s kubernetes-1.24-libvirt
 
 Please refer to [.gitlab-ci.yml](.gitlab-ci.yml) for more information on running Molecule.
 
