@@ -248,6 +248,8 @@ build:kubernetes-1.24-virtualbox:
   variables:
     _BOX: "kubernetes-1.24"
     _PROVIDER: "virtualbox"
+  allow_failure: true
+  retry: 0
 
 test:kubernetes-1.24-virtualbox:
   <<: *job-molecule-test
@@ -262,6 +264,8 @@ test:kubernetes-1.24-virtualbox:
     _PROVIDER: "virtualbox"
   needs:
     - build:kubernetes-1.24-virtualbox
+  allow_failure: true
+  retry: 0
 
 deploy:kubernetes-1.24-virtualbox:
   <<: *job-vagrant-cloud-provider-upload
@@ -276,6 +280,8 @@ deploy:kubernetes-1.24-virtualbox:
     _PROVIDER: "virtualbox"
   needs:
     - test:kubernetes-1.24-virtualbox
+  allow_failure: true
+  retry: 0
 
 build:kubernetes-1.23-libvirt:
   <<: *job-packer-build
@@ -326,6 +332,8 @@ build:kubernetes-1.23-virtualbox:
   variables:
     _BOX: "kubernetes-1.23"
     _PROVIDER: "virtualbox"
+  allow_failure: true
+  retry: 0
 
 test:kubernetes-1.23-virtualbox:
   <<: *job-molecule-test
@@ -340,6 +348,8 @@ test:kubernetes-1.23-virtualbox:
     _PROVIDER: "virtualbox"
   needs:
     - build:kubernetes-1.23-virtualbox
+  allow_failure: true
+  retry: 0
 
 deploy:kubernetes-1.23-virtualbox:
   <<: *job-vagrant-cloud-provider-upload
@@ -354,6 +364,8 @@ deploy:kubernetes-1.23-virtualbox:
     _PROVIDER: "virtualbox"
   needs:
     - test:kubernetes-1.23-virtualbox
+  allow_failure: true
+  retry: 0
 
 build:kubernetes-1.22-libvirt:
   <<: *job-packer-build
@@ -404,6 +416,8 @@ build:kubernetes-1.22-virtualbox:
   variables:
     _BOX: "kubernetes-1.22"
     _PROVIDER: "virtualbox"
+  allow_failure: true
+  retry: 0
 
 test:kubernetes-1.22-virtualbox:
   <<: *job-molecule-test
@@ -418,6 +432,8 @@ test:kubernetes-1.22-virtualbox:
     _PROVIDER: "virtualbox"
   needs:
     - build:kubernetes-1.22-virtualbox
+  allow_failure: true
+  retry: 0
 
 deploy:kubernetes-1.22-virtualbox:
   <<: *job-vagrant-cloud-provider-upload
@@ -432,3 +448,5 @@ deploy:kubernetes-1.22-virtualbox:
     _PROVIDER: "virtualbox"
   needs:
     - test:kubernetes-1.22-virtualbox
+  allow_failure: true
+  retry: 0
