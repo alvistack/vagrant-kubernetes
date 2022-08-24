@@ -23,9 +23,6 @@ This Vagrant Box provides Libvirt and VirtualBox image for running a [Certified 
   - [`alvistack/kubernetes-1.23`](https://app.vagrantup.com/alvistack/boxes/kubernetes-1.23)
       - [`packer/kubernetes-1.23-libvirt/packer.json`](https://github.com/alvistack/vagrant-kubernetes/blob/master/packer/kubernetes-1.23-libvirt/packer.json)
       - [`packer/kubernetes-1.23-virtualbox/packer.json`](https://github.com/alvistack/vagrant-kubernetes/blob/master/packer/kubernetes-1.23-virtualbox/packer.json)
-  - [`alvistack/kubernetes-1.22`](https://app.vagrantup.com/alvistack/boxes/kubernetes-1.22)
-      - [`packer/kubernetes-1.22-libvirt/packer.json`](https://github.com/alvistack/vagrant-kubernetes/blob/master/packer/kubernetes-1.22-libvirt/packer.json)
-      - [`packer/kubernetes-1.22-virtualbox/packer.json`](https://github.com/alvistack/vagrant-kubernetes/blob/master/packer/kubernetes-1.22-virtualbox/packer.json)
 
 ## Overview
 
