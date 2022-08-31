@@ -14,7 +14,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- hosts: all
+- name: converge | all
+  hosts: all
   remote_user: root
   become: true
   tasks:
@@ -104,7 +105,8 @@
       ansible.builtin.include_role:
         name: conmon
 
-- hosts: kube_master:kube_node
+- name: converge | kube_master:kube_node
+  hosts: kube_master:kube_node
   remote_user: root
   become: true
   tasks:
@@ -128,7 +130,8 @@
       ansible.builtin.include_role:
         name: kube_kubeadm
 
-- hosts: etcd
+- name: converge | etcd
+  hosts: etcd
   remote_user: root
   become: true
   tasks:
@@ -136,7 +139,8 @@
       ansible.builtin.include_role:
         name: etcd
 
-- hosts: kube_master
+- name: converge | kube_master
+  hosts: kube_master
   remote_user: root
   become: true
   tasks:
@@ -144,7 +148,8 @@
       ansible.builtin.include_role:
         name: kube_master
 
-- hosts: ansible
+- name: converge | ansible
+  hosts: ansible
   remote_user: root
   become: true
   tasks:
