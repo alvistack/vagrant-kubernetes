@@ -14,7 +14,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- hosts: all
+- name: verify | all
+  hosts: all
   remote_user: root
   become: true
   tasks:
@@ -71,7 +72,8 @@
       loop:
         - { dest: "/root/.ssh/authorized_keys", mode: "0600" }
 
-- hosts: kube_master:kube_node
+- name: verify | kube_master:kube_node
+  hosts: kube_master:kube_node
   remote_user: root
   become: true
   tasks:
@@ -83,7 +85,8 @@
       ansible.builtin.include_role:
         name: kube_kubelet
 
-- hosts: etcd
+- name: verify | etcd
+  hosts: etcd
   remote_user: root
   become: true
   tasks:
@@ -91,7 +94,8 @@
       ansible.builtin.include_role:
         name: etcd
 
-- hosts: kube_master
+- name: verify | kube_master
+  hosts: kube_master
   remote_user: root
   become: true
   tasks:
@@ -99,7 +103,8 @@
       ansible.builtin.include_role:
         name: kube_master
 
-- hosts: kube_node:!kube_master
+- name: verify | kube_node:!kube_master
+  hosts: kube_node:!kube_master
   remote_user: root
   become: true
   tasks:
@@ -107,7 +112,8 @@
       ansible.builtin.include_role:
         name: kube_node
 
-- hosts: ansible
+- name: verify | ansible
+  hosts: ansible
   remote_user: root
   become: true
   tasks:
@@ -143,7 +149,8 @@
       register: base64_decode_result
       changed_when: base64_decode_result is not succeeded
 
-- hosts: kube_master
+- name: verify | kube_master
+  hosts: kube_master
   remote_user: root
   become: true
   tasks:
