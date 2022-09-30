@@ -75,29 +75,35 @@
       changed_when: false
       failed_when: false
 
-    - name: rm -rf /etc/ssh/ssh_host_*
-      ansible.builtin.raw: |
-        set -eu
-        rm -rf /etc/ssh/ssh_host_*
+    - name: systemctl stop kubelet.service
+      ansible.builtin.service:
+        name: "{{ item.name }}"
+        state: "stopped"
+        enabled: false
+      loop:
+        - { name: "kubelet.service" }
+        - { name: "etcd.service" }
+      changed_when: false
+      failed_when: false
+
+    - name: crictl rm --all --force
+      ansible.builtin.shell: |
+        set -euxo pipefail
+        crictl rm --all --force
+        umount --all --force --type fuse.fuse-overlayfs || echo $?
+        umount --all --force --type tmpfs || echo $?
       args:
         executable: "/bin/bash"
       changed_when: false
       failed_when: false
 
-    - name: truncate --size 0 /etc/machine-id
-      ansible.builtin.raw: |
-        set -eu
-        truncate --size 0 /etc/machine-id
-        ln -fs /etc/machine-id /var/lib/dbus/machine-id
-      args:
-        executable: "/bin/bash"
-      changed_when: false
-      failed_when: false
-
-    - name: rm -rf /var/lib/systemd/random-seed
-      ansible.builtin.raw: |
-        set -eu
-        rm -rf /var/lib/systemd/random-seed
+    - name: rm -rf /etc/kubernetes/*
+      ansible.builtin.shell: |
+        set -euxo pipefail
+        rm -rf /etc/etcd/*
+        rm -rf /etc/kubernetes/*
+        rm -rf /var/lib/etcd/*
+        rm -rf /var/lib/kubelet/*
       args:
         executable: "/bin/bash"
       changed_when: false
