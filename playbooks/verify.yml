@@ -162,7 +162,7 @@
         cmd: kubectl version
       register: result
       changed_when: result is not succeeded
- 
+
     - name: kubectl get --raw='/readyz?verbose'
       ansible.builtin.shell:
         cmd: |
