@@ -22,7 +22,8 @@
     - name: kubectl get --raw='/readyz?verbose'
       environment:
         PATH: "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-      ansible.builtin.command: bash -c "(kubectl get --raw='/readyz?verbose' | grep 'check passed')"
+      ansible.builtin.command:
+        cmd: bash -c "(kubectl get --raw='/readyz?verbose' | grep 'check passed')"
       loop: "{{ ansible_play_hosts }}"
       delegate_to: "{{ item }}"
       run_once: true
