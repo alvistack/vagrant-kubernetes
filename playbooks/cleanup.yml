@@ -74,3 +74,39 @@
         executable: "/bin/bash"
       changed_when: false
       failed_when: false
+
+    - name: systemctl stop
+      ansible.builtin.service:
+        name: "{{ item.name }}"
+        state: "stopped"
+        enabled: false
+      loop:
+        - { name: "kubelet.service" }
+        - { name: "etcd.service" }
+      changed_when: false
+      failed_when: false
+
+    - name: crictl rm --all --force
+      ansible.builtin.shell:
+        cmd: |
+          set -euxo pipefail
+          crictl rm --all --force
+          umount --all --force --type fuse.fuse-overlayfs || echo $?
+          umount --all --force --type tmpfs || echo $?
+      args:
+        executable: "/bin/bash"
+      changed_when: false
+      failed_when: false
+
+    - name: rm -rf /etc/kubernetes/*
+      ansible.builtin.shell:
+        cmd: |
+          set -euxo pipefail
+          rm -rf /etc/etcd/*
+          rm -rf /etc/kubernetes/*
+          rm -rf /var/lib/etcd/*
+          rm -rf /var/lib/kubelet/*
+      args:
+        executable: "/bin/bash"
+      changed_when: false
+      failed_when: false
