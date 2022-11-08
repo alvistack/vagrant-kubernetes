@@ -14,27 +14,27 @@ This Vagrant Box provides Libvirt and VirtualBox image for running a [Certified 
 
 ## Supported Boxes and Respective Packer Template Links
 
-  - [`alvistack/kubernetes-1.25`](https://app.vagrantup.com/alvistack/boxes/kubernetes-1.25)
-      - [`packer/kubernetes-1.25-libvirt/packer.json`](https://github.com/alvistack/vagrant-kubernetes/blob/master/packer/kubernetes-1.25-libvirt/packer.json)
-      - [`packer/kubernetes-1.25-virtualbox/packer.json`](https://github.com/alvistack/vagrant-kubernetes/blob/master/packer/kubernetes-1.25-virtualbox/packer.json)
-  - [`alvistack/kubernetes-1.24`](https://app.vagrantup.com/alvistack/boxes/kubernetes-1.24)
-      - [`packer/kubernetes-1.24-libvirt/packer.json`](https://github.com/alvistack/vagrant-kubernetes/blob/master/packer/kubernetes-1.24-libvirt/packer.json)
-      - [`packer/kubernetes-1.24-virtualbox/packer.json`](https://github.com/alvistack/vagrant-kubernetes/blob/master/packer/kubernetes-1.24-virtualbox/packer.json)
-  - [`alvistack/kubernetes-1.23`](https://app.vagrantup.com/alvistack/boxes/kubernetes-1.23)
-      - [`packer/kubernetes-1.23-libvirt/packer.json`](https://github.com/alvistack/vagrant-kubernetes/blob/master/packer/kubernetes-1.23-libvirt/packer.json)
-      - [`packer/kubernetes-1.23-virtualbox/packer.json`](https://github.com/alvistack/vagrant-kubernetes/blob/master/packer/kubernetes-1.23-virtualbox/packer.json)
+-   [`alvistack/kubernetes-1.25`](https://app.vagrantup.com/alvistack/boxes/kubernetes-1.25)
+    -   [`packer/kubernetes-1.25-libvirt/packer.json`](https://github.com/alvistack/vagrant-kubernetes/blob/master/packer/kubernetes-1.25-libvirt/packer.json)
+    -   [`packer/kubernetes-1.25-virtualbox/packer.json`](https://github.com/alvistack/vagrant-kubernetes/blob/master/packer/kubernetes-1.25-virtualbox/packer.json)
+-   [`alvistack/kubernetes-1.24`](https://app.vagrantup.com/alvistack/boxes/kubernetes-1.24)
+    -   [`packer/kubernetes-1.24-libvirt/packer.json`](https://github.com/alvistack/vagrant-kubernetes/blob/master/packer/kubernetes-1.24-libvirt/packer.json)
+    -   [`packer/kubernetes-1.24-virtualbox/packer.json`](https://github.com/alvistack/vagrant-kubernetes/blob/master/packer/kubernetes-1.24-virtualbox/packer.json)
+-   [`alvistack/kubernetes-1.23`](https://app.vagrantup.com/alvistack/boxes/kubernetes-1.23)
+    -   [`packer/kubernetes-1.23-libvirt/packer.json`](https://github.com/alvistack/vagrant-kubernetes/blob/master/packer/kubernetes-1.23-libvirt/packer.json)
+    -   [`packer/kubernetes-1.23-virtualbox/packer.json`](https://github.com/alvistack/vagrant-kubernetes/blob/master/packer/kubernetes-1.23-virtualbox/packer.json)
 
 ## Overview
 
-  - Packaging with [Packer](https://www.packer.io/)
-  - Minimal [Vagrant base box implementation](https://www.vagrantup.com/docs/boxes/base)
-  - Support [QEMU Guest Agent](https://wiki.qemu.org/Features/GuestAgent)
-  - Support [VirtualBox Guest Additions](https://www.virtualbox.org/manual/ch04.html)
-  - Support [Vagrant synced folder with rsync](https://www.vagrantup.com/docs/synced-folders/rsync)
-  - Support [Vagrant provisioner with Ansible](https://www.vagrantup.com/docs/provisioning/ansible)
-  - Standardize disk partition with GPT
-  - Standardize file system mount with UUID
-  - Standardize network interface with `eth0`
+-   Packaging with [Packer](https://www.packer.io/)
+-   Minimal [Vagrant base box implementation](https://www.vagrantup.com/docs/boxes/base)
+-   Support [QEMU Guest Agent](https://wiki.qemu.org/Features/GuestAgent)
+-   Support [VirtualBox Guest Additions](https://www.virtualbox.org/manual/ch04.html)
+-   Support [Vagrant synced folder with rsync](https://www.vagrantup.com/docs/synced-folders/rsync)
+-   Support [Vagrant provisioner with Ansible](https://www.vagrantup.com/docs/provisioning/ansible)
+-   Standardize disk partition with GPT
+-   Standardize file system mount with UUID
+-   Standardize network interface with `eth0`
 
 ### Quick Start
 
@@ -45,7 +45,7 @@ Once you have [Vagrant](https://www.vagrantup.com/docs/installation) and [Virtau
     Vagrant.configure('2') do |config|
       config.vm.hostname = 'kubernetes-1.24'
       config.vm.box = 'alvistack/kubernetes-1.24'
-    
+
       config.vm.provider :libvirt do |libvirt|
         libvirt.cpu_mode = 'host-passthrough'
         libvirt.cpus = 2
@@ -59,7 +59,7 @@ Once you have [Vagrant](https://www.vagrantup.com/docs/installation) and [Virtau
         libvirt.storage :file, bus: 'virtio', cache: 'writeback'
         libvirt.video_type = 'virtio'
       end
-    
+
       config.vm.provider :virtualbox do |virtualbox|
         config.vm.disk :disk, name: 'sdb', size: '10GB'
         virtualbox.cpus = 2
@@ -69,14 +69,14 @@ Once you have [Vagrant](https://www.vagrantup.com/docs/installation) and [Virtau
       end
     end
     EOF
-    
+
     # Start the virtual machine
     export VAGRANT_EXPERIMENTAL='1'
     vagrant up
-    
+
     # SSH into this machine
     vagrant ssh
-    
+
     # Terminate the virtual machine
     vagrant destroy --force
 
@@ -101,11 +101,11 @@ Version tags ended with `.0.0` are rolling release rebuild by [GitLab pipeline](
 
 ## License
 
-  - Code released under [Apache License 2.0](LICENSE)
-  - Docs released under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/)
+-   Code released under [Apache License 2.0](LICENSE)
+-   Docs released under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/)
 
 ## Author Information
 
-  - Wong Hoi Sing Edison
-      - <https://twitter.com/hswong3i>
-      - <https://github.com/hswong3i>
+-   Wong Hoi Sing Edison
+    -   <https://twitter.com/hswong3i>
+    -   <https://github.com/hswong3i>
