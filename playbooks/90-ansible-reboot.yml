@@ -23,8 +23,6 @@
       ansible.builtin.reboot:
         reboot_timeout: 1800
         test_command: bash -c "(whoami)"
-      loop: "{{ ansible_play_hosts }}"
-      delegate_to: "{{ item }}"
-      run_once: true
+      throttle: 1
       changed_when: false
       failed_when: false
