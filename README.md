@@ -6,7 +6,7 @@
 [![Gitlab pipeline status](https://img.shields.io/gitlab/pipeline/alvistack/vagrant-kubernetes/master)](https://gitlab.com/alvistack/vagrant-kubernetes/-/pipelines)
 [![GitHub tag](https://img.shields.io/github/tag/alvistack/vagrant-kubernetes.svg)](https://github.com/alvistack/vagrant-kubernetes/tags)
 [![GitHub license](https://img.shields.io/github/license/alvistack/vagrant-kubernetes.svg)](https://github.com/alvistack/vagrant-kubernetes/blob/master/LICENSE)
-[![Vagrant Box download](https://img.shields.io/badge/dynamic/json?label=alvistack%2Fkubernetes-1.24&query=%24.boxes%5B%3A1%5D.downloads&url=https%3A%2F%2Fapp.vagrantup.com%2Fapi%2Fv1%2Fsearch%3Fq%3Dalvistack%2Fkubernetes-1.24)](https://app.vagrantup.com/alvistack/boxes/kubernetes-1.24)
+[![Vagrant Box download](https://img.shields.io/badge/dynamic/json?label=alvistack%2Fkubernetes-1.26&query=%24.boxes%5B%3A1%5D.downloads&url=https%3A%2F%2Fapp.vagrantup.com%2Fapi%2Fv1%2Fsearch%3Fq%3Dalvistack%2Fkubernetes-1.26)](https://app.vagrantup.com/alvistack/boxes/kubernetes-1.26)
 
 Vagrant Box Packaging for [Kubernetes](https://github.com/kubernetes/kubernetes).
 
@@ -14,6 +14,9 @@ This Vagrant Box provides Libvirt and VirtualBox image for running a [Certified 
 
 ## Supported Boxes and Respective Packer Template Links
 
+-   [`alvistack/kubernetes-1.26`](https://app.vagrantup.com/alvistack/boxes/kubernetes-1.26)
+    -   [`packer/kubernetes-1.26-libvirt/packer.json`](https://github.com/alvistack/vagrant-kubernetes/blob/master/packer/kubernetes-1.26-libvirt/packer.json)
+    -   [`packer/kubernetes-1.26-virtualbox/packer.json`](https://github.com/alvistack/vagrant-kubernetes/blob/master/packer/kubernetes-1.26-virtualbox/packer.json)
 -   [`alvistack/kubernetes-1.25`](https://app.vagrantup.com/alvistack/boxes/kubernetes-1.25)
     -   [`packer/kubernetes-1.25-libvirt/packer.json`](https://github.com/alvistack/vagrant-kubernetes/blob/master/packer/kubernetes-1.25-libvirt/packer.json)
     -   [`packer/kubernetes-1.25-virtualbox/packer.json`](https://github.com/alvistack/vagrant-kubernetes/blob/master/packer/kubernetes-1.25-virtualbox/packer.json)
@@ -43,8 +46,8 @@ Once you have [Vagrant](https://www.vagrantup.com/docs/installation) and [Virtau
     # Initialize Vagrant
     cat > Vagrantfile <<-EOF
     Vagrant.configure('2') do |config|
-      config.vm.hostname = 'kubernetes-1.24'
-      config.vm.box = 'alvistack/kubernetes-1.24'
+      config.vm.hostname = 'kubernetes-1.26'
+      config.vm.box = 'alvistack/kubernetes-1.26'
 
       config.vm.provider :libvirt do |libvirt|
         libvirt.cpu_mode = 'host-passthrough'
@@ -84,8 +87,8 @@ Once you have [Vagrant](https://www.vagrantup.com/docs/installation) and [Virtau
 
 You could also run our [Molecule](https://molecule.readthedocs.io/en/stable/) test cases if you have [Vagrant](https://www.vagrantup.com/) and [Libvirt](https://libvirt.org/) installed, e.g.
 
-    # Run Molecule on Kubernetes 1.24
-    molecule converge -s kubernetes-1.24-libvirt
+    # Run Molecule on Kubernetes 1.26
+    molecule converge -s kubernetes-1.26-libvirt
 
 Please refer to [.gitlab-ci.yml](.gitlab-ci.yml) for more information on running Molecule.
 
