@@ -2,6 +2,10 @@
 	path = roles/ansible
 	url = https://github.com/alvistack/ansible-role-ansible.git
 	branch = develop
+[submodule "roles/buildah"]
+	path = roles/buildah
+	url = https://github.com/alvistack/ansible-role-buildah.git
+	branch = develop
 [submodule "roles/cilium"]
 	path = roles/cilium
 	url = https://github.com/alvistack/ansible-role-cilium.git
@@ -82,9 +86,17 @@
 	path = roles/locales
 	url = https://github.com/alvistack/ansible-role-locales.git
 	branch = develop
+[submodule "roles/podman"]
+	path = roles/podman
+	url = https://github.com/alvistack/ansible-role-podman.git
+	branch = develop
 [submodule "roles/python"]
 	path = roles/python
 	url = https://github.com/alvistack/ansible-role-python.git
+	branch = develop
+[submodule "roles/skopeo"]
+	path = roles/skopeo
+	url = https://github.com/alvistack/ansible-role-skopeo.git
 	branch = develop
 [submodule "roles/sonobuoy"]
 	path = roles/sonobuoy
