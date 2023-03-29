@@ -35,11 +35,6 @@ platforms:
     groups:
       - etcd
       - kube_master
-lint: |
-  set -euxo pipefail
-  flake8
-  yamllint .
-  ansible-lint
 dependency:
   name: galaxy
   options:
