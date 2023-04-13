@@ -1,6 +1,6 @@
 Vagrant.configure('2') do |config|
-  config.vm.hostname = 'kubernetes-1.25'
-  config.vm.box = 'alvistack/kubernetes-1.25'
+  config.vm.hostname = 'kubernetes-1.27'
+  config.vm.box = 'alvistack/kubernetes-1.27'
 
   config.vm.provider :libvirt do |libvirt|
     libvirt.cpu_mode = 'host-passthrough'
