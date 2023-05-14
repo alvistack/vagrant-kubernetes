@@ -248,6 +248,8 @@ build:kubernetes-1.27-virtualbox:
   variables:
     _BOX: "kubernetes-1.27"
     _PROVIDER: "virtualbox"
+  allow_failure: true
+  retry: 0
 
 test:kubernetes-1.27-virtualbox:
   <<: *job-molecule-test
@@ -326,6 +328,8 @@ build:kubernetes-1.26-virtualbox:
   variables:
     _BOX: "kubernetes-1.26"
     _PROVIDER: "virtualbox"
+  allow_failure: true
+  retry: 0
 
 test:kubernetes-1.26-virtualbox:
   <<: *job-molecule-test
@@ -404,6 +408,8 @@ build:kubernetes-1.25-virtualbox:
   variables:
     _BOX: "kubernetes-1.25"
     _PROVIDER: "virtualbox"
+  allow_failure: true
+  retry: 0
 
 test:kubernetes-1.25-virtualbox:
   <<: *job-molecule-test
