@@ -249,7 +249,7 @@ build:kubernetes-1.27-virtualbox:
     _BOX: "kubernetes-1.27"
     _PROVIDER: "virtualbox"
   needs:
-    - build:kubernetes-1.27-libvirt
+    - deploy:kubernetes-1.27-libvirt
 
 test:kubernetes-1.27-virtualbox:
   <<: *job-molecule-test
@@ -329,7 +329,7 @@ build:kubernetes-1.26-virtualbox:
     _BOX: "kubernetes-1.26"
     _PROVIDER: "virtualbox"
   needs:
-    - build:kubernetes-1.26-libvirt
+    - deploy:kubernetes-1.26-libvirt
 
 test:kubernetes-1.26-virtualbox:
   <<: *job-molecule-test
@@ -409,7 +409,7 @@ build:kubernetes-1.25-virtualbox:
     _BOX: "kubernetes-1.25"
     _PROVIDER: "virtualbox"
   needs:
-    - build:kubernetes-1.25-libvirt
+    - deploy:kubernetes-1.25-libvirt
 
 test:kubernetes-1.25-virtualbox:
   <<: *job-molecule-test
