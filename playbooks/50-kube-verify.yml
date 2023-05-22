@@ -14,16 +14,26 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: 90-ansible-reboot | ansible:!ceph_mon
-  hosts: ansible:!ceph_mon
+- name: 50-kube-verify | kube_master
+  hosts: kube_master
   remote_user: root
   become: true
   tasks:
-    - name: reboot
-      ansible.builtin.reboot:
-        connect_timeout: 1800
-        reboot_timeout: 1800
-        pre_reboot_delay: 60
-        post_reboot_delay: 60
-        test_command: bash -c "whoami"
-      throttle: 1
+    - name: kubectl version --output=yaml
+      ansible.builtin.command:
+        cmd: kubectl version --output=yaml
+      register: result
+      changed_when: result is not succeeded
+
+    - name: kubectl get --raw='/readyz?verbose'
+      ansible.builtin.shell:
+        cmd: |
+          set -euxo pipefail
+          kubectl get --raw='/readyz?verbose' | grep 'check passed'
+      args:
+        executable: "/bin/bash"
+      when: inventory_hostname == ansible_play_hosts[0]
+      register: result
+      changed_when: result is not succeeded
+      until: result is succeeded
+      retries: 60

@@ -1,0 +1,118 @@
+---
+
+# Copyright 2023 Wong Hoi Sing Edison <hswong3i@pantarei-design.com>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: 50-kube-install | kube_master:kube_node
+  hosts: kube_master:kube_node
+  remote_user: root
+  become: true
+  tasks:
+    - name: include role
+      ansible.builtin.include_role:
+        name: kube_kubectl
+      tags: kube_kubectl
+
+    - name: include role
+      ansible.builtin.include_role:
+        name: kube_kubelet
+      tags: kube_kubelet
+
+    - name: include role
+      ansible.builtin.include_role:
+        name: kube_kubeadm
+      tags: kube_kubeadm
+
+- name: 50-kube-install | etcd
+  hosts: etcd
+  remote_user: root
+  become: true
+  tasks:
+    - name: include role
+      ansible.builtin.include_role:
+        name: etcd
+      tags: etcd
+
+- name: 50-kube-install | kube_master
+  hosts: kube_master
+  remote_user: root
+  become: true
+  tasks:
+    - name: include role
+      ansible.builtin.include_role:
+        name: kube_master
+      tags: kube_master
+
+- name: 50-kube-install | kube_node:!kube_master
+  hosts: kube_node:!kube_master
+  remote_user: root
+  become: true
+  tasks:
+    - name: include role
+      ansible.builtin.include_role:
+        name: kube_node
+      tags: kube_node
+
+- name: 50-kube-install | ansible
+  hosts: ansible
+  remote_user: root
+  become: true
+  tasks:
+    - name: include role
+      ansible.builtin.include_role:
+        name: sonobuoy
+      tags: sonobuoy
+
+    - name: include role
+      ansible.builtin.include_role:
+        name: helm
+      tags: helm
+
+    - name: include role
+      ansible.builtin.include_role:
+        name: operator_sdk
+      tags: operator_sdk
+
+    - name: include role
+      ansible.builtin.include_role:
+        name: kube_kubectl
+      tags: kube_kubectl
+
+    - name: base64 encode
+      ansible.builtin.shell:
+        cmd: |
+          set -euxo pipefail
+          tar zcfP - {{ _params | join(' ') }} | base64 -w 0
+      vars:
+        _params:
+          - "/etc/etcd/pki"
+          - "/etc/kubernetes/admin.conf"
+          - "/etc/kubernetes/pki"
+      args:
+        executable: "/bin/bash"
+      delegate_to: "{{ groups['kube_master'][0] }}"
+      register: base64_encode_result
+      changed_when: base64_encode_result is not succeeded
+      tags: kube_kubectl
+
+    - name: base64 decode
+      ansible.builtin.shell:
+        cmd: |
+          set -euxo pipefail
+          echo -n {{ base64_encode_result.stdout | quote }} | base64 -d | tar zx -C /
+      args:
+        executable: "/bin/bash"
+      register: base64_decode_result
+      changed_when: base64_decode_result is not succeeded
+      tags: kube_kubectl

@@ -20,10 +20,8 @@
   become: true
   tasks:
     - name: kubectl get --raw='/readyz?verbose'
-      environment:
-        PATH: "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
       ansible.builtin.command:
-        cmd: bash -c "(kubectl get --raw='/readyz?verbose' | grep 'check passed')"
+        cmd: bash -c "kubectl get --raw='/readyz?verbose' | grep 'check passed'"
       when: inventory_hostname == ansible_play_hosts[0]
       register: result
       changed_when: result is not succeeded
@@ -32,8 +30,9 @@
 
     - name: reboot
       ansible.builtin.reboot:
+        connect_timeout: 1800
         reboot_timeout: 1800
-        test_command: bash -c "(kubectl get --raw='/readyz?verbose' | grep 'check passed') && sleep 60"
+        pre_reboot_delay: 60
+        post_reboot_delay: 60
+        test_command: bash -c "kubectl get --raw='/readyz?verbose' | grep 'check passed'"
       throttle: 1
-      changed_when: false
-      failed_when: false

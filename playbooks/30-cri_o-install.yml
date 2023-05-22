@@ -14,27 +14,37 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: 60-kube_cilium-install | kube_master
-  hosts: kube_master
+- name: 30-cri_o-install | kube_master:kube_node
+  hosts: kube_master:kube_node
   remote_user: root
   become: true
   tasks:
     - name: include role
       ansible.builtin.include_role:
-        name: kube_addon_manager
-      tags: kube_addon_manager
+        name: crun
+      tags: crun
 
     - name: include role
       ansible.builtin.include_role:
-        name: kube_cilium
-      tags: kube_cilium
+        name: containers_common
+      tags: containers_common
 
-- name: 60-kube_cilium-install | ansible
-  hosts: ansible
-  remote_user: root
-  become: true
-  tasks:
     - name: include role
       ansible.builtin.include_role:
-        name: cilium
-      tags: cilium
+        name: containernetworking_plugins
+      tags: containernetworking_plugins
+
+    - name: include role
+      ansible.builtin.include_role:
+        name: conmon
+      tags: conmon
+
+    - name: include role
+      ansible.builtin.include_role:
+        name: cri_o
+      tags: cri_o
+
+    - name: include role
+      ansible.builtin.include_role:
+        name: cri_tools
+      tags: cri_tools

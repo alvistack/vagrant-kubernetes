@@ -14,16 +14,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: 90-ansible-reboot | ansible:!ceph_mon
-  hosts: ansible:!ceph_mon
+- name: 80-kube_registry-install | kube_master
+  hosts: kube_master
   remote_user: root
   become: true
   tasks:
-    - name: reboot
-      ansible.builtin.reboot:
-        connect_timeout: 1800
-        reboot_timeout: 1800
-        pre_reboot_delay: 60
-        post_reboot_delay: 60
-        test_command: bash -c "whoami"
-      throttle: 1
+    - name: include role
+      ansible.builtin.include_role:
+        name: kube_addon_manager
+      tags: kube_addon_manager
+
+    - name: include role
+      ansible.builtin.include_role:
+        name: kube_registry
+      tags: kube_registry
