@@ -14,16 +14,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: 90-ansible-reboot | ansible:!ceph_mon
-  hosts: ansible:!ceph_mon
+- name: 20-ansible-install | ansible
+  hosts: ansible
   remote_user: root
   become: true
   tasks:
-    - name: reboot
-      ansible.builtin.reboot:
-        connect_timeout: 1800
-        reboot_timeout: 1800
-        pre_reboot_delay: 60
-        post_reboot_delay: 60
-        test_command: bash -c "whoami"
-      throttle: 1
+    - name: include role
+      ansible.builtin.include_role:
+        name: ansible
+      tags: ansible
+
+    - name: include role
+      ansible.builtin.include_role:
+        name: rclone
+      tags: rclone
+
+    - name: include role
+      ansible.builtin.include_role:
+        name: restic
+      tags: restic
