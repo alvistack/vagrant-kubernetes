@@ -10,7 +10,7 @@ tag](https://img.shields.io/github/tag/alvistack/vagrant-kubernetes.svg)](https:
 [![GitHub
 license](https://img.shields.io/github/license/alvistack/vagrant-kubernetes.svg)](https://github.com/alvistack/vagrant-kubernetes/blob/master/LICENSE)
 [![Vagrant Box
-download](https://img.shields.io/badge/dynamic/json?label=alvistack%2Fkubernetes-1.26&query=%24.boxes%5B%3A1%5D.downloads&url=https%3A%2F%2Fapp.vagrantup.com%2Fapi%2Fv1%2Fsearch%3Fq%3Dalvistack%2Fkubernetes-1.26)](https://app.vagrantup.com/alvistack/boxes/kubernetes-1.26)
+download](https://img.shields.io/badge/dynamic/json?label=alvistack%2Fkubernetes-1.28&query=%24.boxes%5B%3A1%5D.downloads&url=https%3A%2F%2Fapp.vagrantup.com%2Fapi%2Fv1%2Fsearch%3Fq%3Dalvistack%2Fkubernetes-1.28)](https://app.vagrantup.com/alvistack/boxes/kubernetes-1.28)
 
 Vagrant Box Packaging for
 [Kubernetes](https://github.com/kubernetes/kubernetes).
@@ -22,6 +22,9 @@ environment in single node all-in-one mode.
 
 ## Supported Boxes and Respective Packer Template Links
 
+-   [`alvistack/kubernetes-1.28`](https://app.vagrantup.com/alvistack/boxes/kubernetes-1.28)
+    -   [`packer/kubernetes-1.28-libvirt/packer.json`](https://github.com/alvistack/vagrant-kubernetes/blob/master/packer/kubernetes-1.28-libvirt/packer.json)
+    -   [`packer/kubernetes-1.28-virtualbox/packer.json`](https://github.com/alvistack/vagrant-kubernetes/blob/master/packer/kubernetes-1.28-virtualbox/packer.json)
 -   [`alvistack/kubernetes-1.27`](https://app.vagrantup.com/alvistack/boxes/kubernetes-1.27)
     -   [`packer/kubernetes-1.27-libvirt/packer.json`](https://github.com/alvistack/vagrant-kubernetes/blob/master/packer/kubernetes-1.27-libvirt/packer.json)
     -   [`packer/kubernetes-1.27-virtualbox/packer.json`](https://github.com/alvistack/vagrant-kubernetes/blob/master/packer/kubernetes-1.27-virtualbox/packer.json)
@@ -59,8 +62,8 @@ directory](https://learn.hashicorp.com/tutorials/vagrant/getting-started-project
     # Initialize Vagrant
     cat > Vagrantfile <<-EOF
     Vagrant.configure('2') do |config|
-      config.vm.hostname = 'kubernetes-1.26'
-      config.vm.box = 'alvistack/kubernetes-1.26'
+      config.vm.hostname = 'kubernetes-1.28'
+      config.vm.box = 'alvistack/kubernetes-1.28'
 
       config.vm.provider :libvirt do |libvirt|
         libvirt.cpu_mode = 'host-passthrough'
@@ -103,8 +106,8 @@ You could also run our
 have [Vagrant](https://www.vagrantup.com/) and
 [Libvirt](https://libvirt.org/) installed, e.g.
 
-    # Run Molecule on Kubernetes 1.26
-    molecule converge -s kubernetes-1.26-libvirt
+    # Run Molecule on Kubernetes 1.28
+    molecule converge -s kubernetes-1.28-libvirt
 
 Please refer to [.gitlab-ci.yml](.gitlab-ci.yml) for more information on
 running Molecule.
