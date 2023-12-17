@@ -163,6 +163,15 @@
       ansible.builtin.include_role:
         name: kube_master
 
+- name: converge | kube_node
+  hosts: kube_node:!kube_master
+  remote_user: root
+  become: true
+  tasks:
+    - name: include role
+      ansible.builtin.include_role:
+        name: kube_node
+
 - name: converge | ansible
   hosts: ansible
   remote_user: root

@@ -2,6 +2,7 @@
 
 ## YYYYMMDD.Y.Z - TBC
 
+-   Remove Kubernetes 1.26 support
 -   Remove Fedora 37 support
 -   Remove openSUSE Leap 15.4 support
 -   Support Kubernetes 1.29
@@ -105,9 +106,7 @@
 ## 20220520.1.1 - 2022-05-20
 
 -   Support Ansible community package 5.8.0
-
 -   Remove Fedora 34 support
-
 -   Cilium as default CNI
 
 ## 20220427.1.1 - 2022-04-27
