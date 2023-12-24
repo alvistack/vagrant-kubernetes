@@ -108,17 +108,14 @@
     - name: include role
       ansible.builtin.include_role:
         name: skopeo
-      tags: skopeo
 
     - name: include role
       ansible.builtin.include_role:
         name: buildah
-      tags: buildah
 
     - name: include role
       ansible.builtin.include_role:
         name: podman
-      tags: podman
 
 - name: converge | kube_master:kube_node
   hosts: kube_master:kube_node
