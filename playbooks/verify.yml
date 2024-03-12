@@ -1,5 +1,4 @@
 ---
-
 # Copyright 2024 Wong Hoi Sing Edison <hswong3i@pantarei-design.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,7 +19,7 @@
   become: true
   tasks:
     - name: include default variables
-      ansible.builtin.include_vars: "./vars/main.yml"
+      ansible.builtin.include_vars: ./vars/main.yml
 
     - name: include release specific variables
       ansible.builtin.include_vars: "{{ _loop_var }}"
@@ -37,7 +36,7 @@
             - "{{ ansible_os_family | lower }}-{{ ansible_distribution_major_version | lower }}.yml"
             - "{{ ansible_os_family | lower }}.yml"
           paths:
-            - "./vars"
+            - ./vars
           skip: true
 
     - name: ssh-keygen
@@ -46,7 +45,7 @@
           set -euxo pipefail
           ssh-keygen -A
       args:
-        executable: "/bin/bash"
+        executable: /bin/bash
       changed_when: false
       failed_when: false
 
@@ -58,9 +57,9 @@
         mode: "{{ item.mode | default('0755') }}"
         state: "{{ item.state | default('directory') }}"
       loop:
-        - { dest: "/root", mode: "0700" }
-        - { dest: "/root/.ssh", mode: "0700" }
-        - { dest: "/run/sshd" }
+        - { dest: /root, mode: "0700" }
+        - { dest: /root/.ssh, mode: "0700" }
+        - { dest: /run/sshd }
 
     - name: touch files
       ansible.builtin.copy:
@@ -71,7 +70,7 @@
         content: ""
         force: false
       loop:
-        - { dest: "/root/.ssh/authorized_keys", mode: "0600" }
+        - { dest: /root/.ssh/authorized_keys, mode: "0600" }
 
 - name: verify | kube_master:kube_node
   hosts: kube_master:kube_node
@@ -133,11 +132,11 @@
           tar zcfP - {{ _params | join(' ') }} | base64 -w 0
       vars:
         _params:
-          - "/etc/etcd/pki"
-          - "/etc/kubernetes/admin.conf"
-          - "/etc/kubernetes/pki"
+          - /etc/etcd/pki
+          - /etc/kubernetes/admin.conf
+          - /etc/kubernetes/pki
       args:
-        executable: "/bin/bash"
+        executable: /bin/bash
       delegate_to: "{{ groups['kube_master'][0] }}"
       register: base64_encode_result
       changed_when: base64_encode_result is not succeeded
@@ -148,7 +147,7 @@
           set -euxo pipefail
           echo -n {{ base64_encode_result.stdout | quote }} | base64 -d | tar zx -C /
       args:
-        executable: "/bin/bash"
+        executable: /bin/bash
       register: base64_decode_result
       changed_when: base64_decode_result is not succeeded
 
@@ -163,7 +162,7 @@
           set -euxo pipefail
           kubectl get --raw='/readyz?verbose' | grep 'check passed'
       args:
-        executable: "/bin/bash"
+        executable: /bin/bash
       when: inventory_hostname == ansible_play_hosts[0]
       register: result
       changed_when: result is not succeeded

@@ -203,24 +203,24 @@ build:kubernetes-1.29-libvirt:
   <<: *job-packer-build
   stage: build
   cache:
-    key: "$CI_PIPELINE_ID-kubernetes-1.29-libvirt"
+    key: $CI_PIPELINE_ID-kubernetes-1.29-libvirt
     paths:
       - packer/*/output-vagrant
   variables:
-    _BOX: "kubernetes-1.29"
-    _PROVIDER: "libvirt"
+    _BOX: kubernetes-1.29
+    _PROVIDER: libvirt
 
 test:kubernetes-1.29-libvirt:
   <<: *job-molecule-test
   stage: test
   cache:
-    key: "$CI_PIPELINE_ID-kubernetes-1.29-libvirt"
+    key: $CI_PIPELINE_ID-kubernetes-1.29-libvirt
     paths:
       - packer/*/output-vagrant
     policy: pull
   variables:
-    _BOX: "kubernetes-1.29"
-    _PROVIDER: "libvirt"
+    _BOX: kubernetes-1.29
+    _PROVIDER: libvirt
   needs:
     - build:kubernetes-1.29-libvirt
 
@@ -228,13 +228,13 @@ deploy:kubernetes-1.29-libvirt:
   <<: *job-vagrant-cloud-provider-upload
   stage: deploy
   cache:
-    key: "$CI_PIPELINE_ID-kubernetes-1.29-libvirt"
+    key: $CI_PIPELINE_ID-kubernetes-1.29-libvirt
     paths:
       - packer/*/output-vagrant
     policy: pull
   variables:
-    _BOX: "kubernetes-1.29"
-    _PROVIDER: "libvirt"
+    _BOX: kubernetes-1.29
+    _PROVIDER: libvirt
   needs:
     - test:kubernetes-1.29-libvirt
 
@@ -242,12 +242,12 @@ build:kubernetes-1.29-virtualbox:
   <<: *job-packer-build
   stage: build
   cache:
-    key: "$CI_PIPELINE_ID-kubernetes-1.29-virtualbox"
+    key: $CI_PIPELINE_ID-kubernetes-1.29-virtualbox
     paths:
       - packer/*/output-vagrant
   variables:
-    _BOX: "kubernetes-1.29"
-    _PROVIDER: "virtualbox"
+    _BOX: kubernetes-1.29
+    _PROVIDER: virtualbox
   needs:
     - build:kubernetes-1.29-libvirt
 
@@ -255,13 +255,13 @@ test:kubernetes-1.29-virtualbox:
   <<: *job-molecule-test
   stage: test
   cache:
-    key: "$CI_PIPELINE_ID-kubernetes-1.29-virtualbox"
+    key: $CI_PIPELINE_ID-kubernetes-1.29-virtualbox
     paths:
       - packer/*/output-vagrant
     policy: pull
   variables:
-    _BOX: "kubernetes-1.29"
-    _PROVIDER: "virtualbox"
+    _BOX: kubernetes-1.29
+    _PROVIDER: virtualbox
   needs:
     - build:kubernetes-1.29-virtualbox
 
@@ -269,13 +269,13 @@ deploy:kubernetes-1.29-virtualbox:
   <<: *job-vagrant-cloud-provider-upload
   stage: deploy
   cache:
-    key: "$CI_PIPELINE_ID-kubernetes-1.29-virtualbox"
+    key: $CI_PIPELINE_ID-kubernetes-1.29-virtualbox
     paths:
       - packer/*/output-vagrant
     policy: pull
   variables:
-    _BOX: "kubernetes-1.29"
-    _PROVIDER: "virtualbox"
+    _BOX: kubernetes-1.29
+    _PROVIDER: virtualbox
   needs:
     - test:kubernetes-1.29-virtualbox
 
@@ -283,24 +283,24 @@ build:kubernetes-1.28-libvirt:
   <<: *job-packer-build
   stage: build
   cache:
-    key: "$CI_PIPELINE_ID-kubernetes-1.28-libvirt"
+    key: $CI_PIPELINE_ID-kubernetes-1.28-libvirt
     paths:
       - packer/*/output-vagrant
   variables:
-    _BOX: "kubernetes-1.28"
-    _PROVIDER: "libvirt"
+    _BOX: kubernetes-1.28
+    _PROVIDER: libvirt
 
 test:kubernetes-1.28-libvirt:
   <<: *job-molecule-test
   stage: test
   cache:
-    key: "$CI_PIPELINE_ID-kubernetes-1.28-libvirt"
+    key: $CI_PIPELINE_ID-kubernetes-1.28-libvirt
     paths:
       - packer/*/output-vagrant
     policy: pull
   variables:
-    _BOX: "kubernetes-1.28"
-    _PROVIDER: "libvirt"
+    _BOX: kubernetes-1.28
+    _PROVIDER: libvirt
   needs:
     - build:kubernetes-1.28-libvirt
 
@@ -308,13 +308,13 @@ deploy:kubernetes-1.28-libvirt:
   <<: *job-vagrant-cloud-provider-upload
   stage: deploy
   cache:
-    key: "$CI_PIPELINE_ID-kubernetes-1.28-libvirt"
+    key: $CI_PIPELINE_ID-kubernetes-1.28-libvirt
     paths:
       - packer/*/output-vagrant
     policy: pull
   variables:
-    _BOX: "kubernetes-1.28"
-    _PROVIDER: "libvirt"
+    _BOX: kubernetes-1.28
+    _PROVIDER: libvirt
   needs:
     - test:kubernetes-1.28-libvirt
 
@@ -322,12 +322,12 @@ build:kubernetes-1.28-virtualbox:
   <<: *job-packer-build
   stage: build
   cache:
-    key: "$CI_PIPELINE_ID-kubernetes-1.28-virtualbox"
+    key: $CI_PIPELINE_ID-kubernetes-1.28-virtualbox
     paths:
       - packer/*/output-vagrant
   variables:
-    _BOX: "kubernetes-1.28"
-    _PROVIDER: "virtualbox"
+    _BOX: kubernetes-1.28
+    _PROVIDER: virtualbox
   needs:
     - build:kubernetes-1.28-libvirt
 
@@ -335,13 +335,13 @@ test:kubernetes-1.28-virtualbox:
   <<: *job-molecule-test
   stage: test
   cache:
-    key: "$CI_PIPELINE_ID-kubernetes-1.28-virtualbox"
+    key: $CI_PIPELINE_ID-kubernetes-1.28-virtualbox
     paths:
       - packer/*/output-vagrant
     policy: pull
   variables:
-    _BOX: "kubernetes-1.28"
-    _PROVIDER: "virtualbox"
+    _BOX: kubernetes-1.28
+    _PROVIDER: virtualbox
   needs:
     - build:kubernetes-1.28-virtualbox
 
@@ -349,13 +349,13 @@ deploy:kubernetes-1.28-virtualbox:
   <<: *job-vagrant-cloud-provider-upload
   stage: deploy
   cache:
-    key: "$CI_PIPELINE_ID-kubernetes-1.28-virtualbox"
+    key: $CI_PIPELINE_ID-kubernetes-1.28-virtualbox
     paths:
       - packer/*/output-vagrant
     policy: pull
   variables:
-    _BOX: "kubernetes-1.28"
-    _PROVIDER: "virtualbox"
+    _BOX: kubernetes-1.28
+    _PROVIDER: virtualbox
   needs:
     - test:kubernetes-1.28-virtualbox
 
@@ -363,24 +363,24 @@ build:kubernetes-1.27-libvirt:
   <<: *job-packer-build
   stage: build
   cache:
-    key: "$CI_PIPELINE_ID-kubernetes-1.27-libvirt"
+    key: $CI_PIPELINE_ID-kubernetes-1.27-libvirt
     paths:
       - packer/*/output-vagrant
   variables:
-    _BOX: "kubernetes-1.27"
-    _PROVIDER: "libvirt"
+    _BOX: kubernetes-1.27
+    _PROVIDER: libvirt
 
 test:kubernetes-1.27-libvirt:
   <<: *job-molecule-test
   stage: test
   cache:
-    key: "$CI_PIPELINE_ID-kubernetes-1.27-libvirt"
+    key: $CI_PIPELINE_ID-kubernetes-1.27-libvirt
     paths:
       - packer/*/output-vagrant
     policy: pull
   variables:
-    _BOX: "kubernetes-1.27"
-    _PROVIDER: "libvirt"
+    _BOX: kubernetes-1.27
+    _PROVIDER: libvirt
   needs:
     - build:kubernetes-1.27-libvirt
 
@@ -388,13 +388,13 @@ deploy:kubernetes-1.27-libvirt:
   <<: *job-vagrant-cloud-provider-upload
   stage: deploy
   cache:
-    key: "$CI_PIPELINE_ID-kubernetes-1.27-libvirt"
+    key: $CI_PIPELINE_ID-kubernetes-1.27-libvirt
     paths:
       - packer/*/output-vagrant
     policy: pull
   variables:
-    _BOX: "kubernetes-1.27"
-    _PROVIDER: "libvirt"
+    _BOX: kubernetes-1.27
+    _PROVIDER: libvirt
   needs:
     - test:kubernetes-1.27-libvirt
 
@@ -402,12 +402,12 @@ build:kubernetes-1.27-virtualbox:
   <<: *job-packer-build
   stage: build
   cache:
-    key: "$CI_PIPELINE_ID-kubernetes-1.27-virtualbox"
+    key: $CI_PIPELINE_ID-kubernetes-1.27-virtualbox
     paths:
       - packer/*/output-vagrant
   variables:
-    _BOX: "kubernetes-1.27"
-    _PROVIDER: "virtualbox"
+    _BOX: kubernetes-1.27
+    _PROVIDER: virtualbox
   needs:
     - build:kubernetes-1.27-libvirt
 
@@ -415,13 +415,13 @@ test:kubernetes-1.27-virtualbox:
   <<: *job-molecule-test
   stage: test
   cache:
-    key: "$CI_PIPELINE_ID-kubernetes-1.27-virtualbox"
+    key: $CI_PIPELINE_ID-kubernetes-1.27-virtualbox
     paths:
       - packer/*/output-vagrant
     policy: pull
   variables:
-    _BOX: "kubernetes-1.27"
-    _PROVIDER: "virtualbox"
+    _BOX: kubernetes-1.27
+    _PROVIDER: virtualbox
   needs:
     - build:kubernetes-1.27-virtualbox
 
@@ -429,12 +429,12 @@ deploy:kubernetes-1.27-virtualbox:
   <<: *job-vagrant-cloud-provider-upload
   stage: deploy
   cache:
-    key: "$CI_PIPELINE_ID-kubernetes-1.27-virtualbox"
+    key: $CI_PIPELINE_ID-kubernetes-1.27-virtualbox
     paths:
       - packer/*/output-vagrant
     policy: pull
   variables:
-    _BOX: "kubernetes-1.27"
-    _PROVIDER: "virtualbox"
+    _BOX: kubernetes-1.27
+    _PROVIDER: virtualbox
   needs:
     - test:kubernetes-1.27-virtualbox
