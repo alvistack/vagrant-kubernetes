@@ -4,6 +4,7 @@
 
 ## 20240424.1.1 - 2024-04-01
 
+-   Support Ansible community package 9.5.0
 -   Support Kubernetes 1.30
 
 ## 20240328.1.1 - 2024-03-28
