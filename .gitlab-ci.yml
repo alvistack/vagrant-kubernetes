@@ -203,6 +203,86 @@ default:
     - *script-linters
   retry: 2
 
+build:kubernetes-1.31-libvirt:
+  <<: *job-packer-build
+  stage: build
+  cache:
+    key: $CI_PIPELINE_ID-kubernetes-1.31-libvirt
+    paths:
+      - packer/*/output-vagrant
+  variables:
+    _BOX: kubernetes-1.31
+    _PROVIDER: libvirt
+
+test:kubernetes-1.31-libvirt:
+  <<: *job-molecule-test
+  stage: test
+  cache:
+    key: $CI_PIPELINE_ID-kubernetes-1.31-libvirt
+    paths:
+      - packer/*/output-vagrant
+    policy: pull
+  variables:
+    _BOX: kubernetes-1.31
+    _PROVIDER: libvirt
+  needs:
+    - build:kubernetes-1.31-libvirt
+
+deploy:kubernetes-1.31-libvirt:
+  <<: *job-vagrant-cloud-provider-upload
+  stage: deploy
+  cache:
+    key: $CI_PIPELINE_ID-kubernetes-1.31-libvirt
+    paths:
+      - packer/*/output-vagrant
+    policy: pull
+  variables:
+    _BOX: kubernetes-1.31
+    _PROVIDER: libvirt
+  needs:
+    - test:kubernetes-1.31-libvirt
+
+build:kubernetes-1.31-virtualbox:
+  <<: *job-packer-build
+  stage: build
+  cache:
+    key: $CI_PIPELINE_ID-kubernetes-1.31-virtualbox
+    paths:
+      - packer/*/output-vagrant
+  variables:
+    _BOX: kubernetes-1.31
+    _PROVIDER: virtualbox
+  needs:
+    - build:kubernetes-1.31-libvirt
+
+test:kubernetes-1.31-virtualbox:
+  <<: *job-molecule-test
+  stage: test
+  cache:
+    key: $CI_PIPELINE_ID-kubernetes-1.31-virtualbox
+    paths:
+      - packer/*/output-vagrant
+    policy: pull
+  variables:
+    _BOX: kubernetes-1.31
+    _PROVIDER: virtualbox
+  needs:
+    - build:kubernetes-1.31-virtualbox
+
+deploy:kubernetes-1.31-virtualbox:
+  <<: *job-vagrant-cloud-provider-upload
+  stage: deploy
+  cache:
+    key: $CI_PIPELINE_ID-kubernetes-1.31-virtualbox
+    paths:
+      - packer/*/output-vagrant
+    policy: pull
+  variables:
+    _BOX: kubernetes-1.31
+    _PROVIDER: virtualbox
+  needs:
+    - test:kubernetes-1.31-virtualbox
+
 build:kubernetes-1.30-libvirt:
   <<: *job-packer-build
   stage: build
