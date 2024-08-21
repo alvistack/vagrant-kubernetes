@@ -1,6 +1,6 @@
 Vagrant.configure("2") do |config|
-  config.vm.hostname = "kubernetes-1.30"
-  config.vm.box = "alvistack/kubernetes-1.30"
+  config.vm.hostname = "kubernetes-1.31"
+  config.vm.box = "alvistack/kubernetes-1.31"
   config.vm.box_check_update = true
 
   config.vm.provider :virtualbox do |virtualbox, override|
