@@ -2,6 +2,8 @@
 
 ## YYYYMMDD.Y.Z - TBC
 
+- Support Ubuntu 24.10
+- Support Ansible community package 10.5.0
 - Remove Kubernetes 1.28 support
 
 ## 20240911.1.1 - 2024-09-11
