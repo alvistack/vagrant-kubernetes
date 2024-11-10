@@ -13,7 +13,7 @@
 
 .script-bootstrap-python: &script-bootstrap-python
   - |
-    if ! [[ -x "$(command -v pipx)" ]]; then
+    if ! [[ -x "$(command -v pipx)" && -x "$(command -v flake8)" && -x "$(command -v yamllint)" ]]; then
       export DEBIAN_FRONTEND="noninteractive"
       echo "deb http://downloadcontent.opensuse.org/repositories/home:/alvistack/xUbuntu_24.04/ /" | sudo tee /etc/apt/sources.list.d/home:alvistack.list
       curl -fsSL https://downloadcontent.opensuse.org/repositories/home:alvistack/xUbuntu_24.04/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/home_alvistack.gpg > /dev/null
@@ -27,7 +27,7 @@
 
 .script-bootstrap-ansible: &script-bootstrap-ansible
   - |
-    if ! [[ -x "$(command -v ansible)" ]]; then
+    if ! [[ -x "$(command -v ansible)" && -x "$(command -v ansible-lint)" ]]; then
       export DEBIAN_FRONTEND="noninteractive"
       echo "deb http://downloadcontent.opensuse.org/repositories/home:/alvistack/xUbuntu_24.04/ /" | sudo tee /etc/apt/sources.list.d/home:alvistack.list
       curl -fsSL https://downloadcontent.opensuse.org/repositories/home:alvistack/xUbuntu_24.04/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/home_alvistack.gpg > /dev/null
@@ -83,14 +83,15 @@
 
 .script-bootstrap-vagrant: &script-bootstrap-vagrant
   - |
-    if ! [[ -x "$(command -v vagrant)" ]]; then
+    if ! [[ -x "$(command -v hcp)" && -x "$(command -v vagrant)" ]]; then
       export DEBIAN_FRONTEND="noninteractive"
       echo "deb http://downloadcontent.opensuse.org/repositories/home:/alvistack/xUbuntu_24.04/ /" | sudo tee /etc/apt/sources.list.d/home:alvistack.list
       curl -fsSL https://downloadcontent.opensuse.org/repositories/home:alvistack/xUbuntu_24.04/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/home_alvistack.gpg > /dev/null
       sudo -E apt-get update
-      sudo -E apt-get install -y vagrant
+      sudo -E apt-get install -y hcp vagrant
       vagrant plugin install vagrant-libvirt
     fi
+    sh -x -c "hcp version"
     sh -x -c "vagrant --version"
     sh -x -c "vagrant plugin list"
 
@@ -107,7 +108,6 @@
 
 .script-packer-build: &script-packer-build
   - |
-    sudo -E vagrant cloud auth login --token $VAGRANT_CLOUD_TOKEN
     cd $CI_PROJECT_DIR/packer/$_BOX-$_PROVIDER
     sudo -E packer build packer.json
 
@@ -134,33 +134,34 @@
     else
       exit 0
     fi
-    sudo -E vagrant cloud auth login --token $VAGRANT_CLOUD_TOKEN
+    sudo -E hcp auth login --client-id=$HCP_CLIENT_ID --client-secret=$HCP_CLIENT_SECRET
+    export _VAGRANT_CLOUD_TOKEN=";$(sudo -E hcp auth print-access-token)"
     cd $CI_PROJECT_DIR/packer/$_BOX-$_PROVIDER
     export _ORG="$CI_PROJECT_NAMESPACE"
     export _CHECKSUM="$(sha256sum output-vagrant/package.box | awk '{ print $1 }')"
     curl -skL \
       --header "Content-Type: application/json" \
-      --header "Authorization: Bearer $VAGRANT_CLOUD_TOKEN" \
+      --header "Authorization: Bearer $_VAGRANT_CLOUD_TOKEN" \
       --data "{ \"box\": { \"username\": \"$_ORG\", \"name\": \"$_BOX\", \"is_private\": false } }" \
-      https://app.vagrantup.com/api/v1/boxes | jq .
+      https://app.vagrantup.com/api/v2/boxes | jq .
     curl -skL \
       --header "Content-Type: application/json" \
-      --header "Authorization: Bearer $VAGRANT_CLOUD_TOKEN" \
+      --header "Authorization: Bearer $_VAGRANT_CLOUD_TOKEN" \
       --data "{ \"version\": { \"version\": \"$_VERSION\" } }" \
-      https://app.vagrantup.com/api/v1/box/$_ORG/$_BOX/versions | jq .
+      https://app.vagrantup.com/api/v2/box/$_ORG/$_BOX/versions | jq .
     curl -skL \
       --request DELETE \
       --header "Content-Type: application/json" \
-      --header "Authorization: Bearer $VAGRANT_CLOUD_TOKEN" \
-      https://app.vagrantup.com/api/v1/box/$_ORG/$_BOX/version/$_VERSION/provider/$_PROVIDER | jq .
+      --header "Authorization: Bearer $_VAGRANT_CLOUD_TOKEN" \
+      https://app.vagrantup.com/api/v2/box/$_ORG/$_BOX/version/$_VERSION/provider/$_PROVIDER/$_ARCHITECTURE | jq .
     curl -skL \
       --header "Content-Type: application/json" \
-      --header "Authorization: Bearer $VAGRANT_CLOUD_TOKEN" \
-      --data "{ \"provider\": { \"name\": \"$_PROVIDER\", \"checksum_type\": \"sha256\", \"checksum\": \"$_CHECKSUM\" } }" \
-      https://app.vagrantup.com/api/v1/box/$_ORG/$_BOX/version/$_VERSION/providers | jq .
+      --header "Authorization: Bearer $_VAGRANT_CLOUD_TOKEN" \
+      --data "{ \"provider\": { \"name\": \"$_PROVIDER\", \"checksum_type\": \"sha256\", \"checksum\": \"$_CHECKSUM\", \"architecture\": \"$_ARCHITECTURE\", \"default_architecture\": true } }" \
+      https://app.vagrantup.com/api/v2/box/$_ORG/$_BOX/version/$_VERSION/providers | jq .
     _UPLOAD_PATH=$(curl -skL \
-      --header "Authorization: Bearer $VAGRANT_CLOUD_TOKEN" \
-      https://app.vagrantup.com/api/v1/box/$_ORG/$_BOX/version/$_VERSION/provider/$_PROVIDER/upload | jq -r .upload_path)
+      --header "Authorization: Bearer $_VAGRANT_CLOUD_TOKEN" \
+      https://app.vagrantup.com/api/v2/box/$_ORG/$_BOX/version/$_VERSION/provider/$_PROVIDER/$_ARCHITECTURE/upload | jq -r .upload_path)
     curl -skL \
       --request PUT \
       --header "Connection: keep-alive" \
@@ -168,8 +169,8 @@
       $_UPLOAD_PATH | jq .
     curl -skL \
       --request PUT \
-      --header "Authorization: Bearer $VAGRANT_CLOUD_TOKEN" \
-      https://app.vagrantup.com/api/v1/box/$_ORG/$_BOX/version/$_VERSION/release | jq .
+      --header "Authorization: Bearer $_VAGRANT_CLOUD_TOKEN" \
+      https://app.vagrantup.com/api/v2/box/$_ORG/$_BOX/version/$_VERSION/release | jq .
 
 .job-packer-build: &job-packer-build
   script:
@@ -213,6 +214,7 @@ build:kubernetes-1.31-libvirt:
   variables:
     _BOX: kubernetes-1.31
     _PROVIDER: libvirt
+    _ARCHITECTURE: amd64
 
 test:kubernetes-1.31-libvirt:
   <<: *job-molecule-test
@@ -225,6 +227,7 @@ test:kubernetes-1.31-libvirt:
   variables:
     _BOX: kubernetes-1.31
     _PROVIDER: libvirt
+    _ARCHITECTURE: amd64
   needs:
     - build:kubernetes-1.31-libvirt
 
@@ -239,6 +242,7 @@ deploy:kubernetes-1.31-libvirt:
   variables:
     _BOX: kubernetes-1.31
     _PROVIDER: libvirt
+    _ARCHITECTURE: amd64
   needs:
     - test:kubernetes-1.31-libvirt
 
@@ -252,6 +256,7 @@ build:kubernetes-1.31-virtualbox:
   variables:
     _BOX: kubernetes-1.31
     _PROVIDER: virtualbox
+    _ARCHITECTURE: amd64
   needs:
     - build:kubernetes-1.31-libvirt
 
@@ -266,6 +271,7 @@ test:kubernetes-1.31-virtualbox:
   variables:
     _BOX: kubernetes-1.31
     _PROVIDER: virtualbox
+    _ARCHITECTURE: amd64
   needs:
     - build:kubernetes-1.31-virtualbox
 
@@ -280,6 +286,7 @@ deploy:kubernetes-1.31-virtualbox:
   variables:
     _BOX: kubernetes-1.31
     _PROVIDER: virtualbox
+    _ARCHITECTURE: amd64
   needs:
     - test:kubernetes-1.31-virtualbox
 
@@ -293,6 +300,7 @@ build:kubernetes-1.30-libvirt:
   variables:
     _BOX: kubernetes-1.30
     _PROVIDER: libvirt
+    _ARCHITECTURE: amd64
 
 test:kubernetes-1.30-libvirt:
   <<: *job-molecule-test
@@ -305,6 +313,7 @@ test:kubernetes-1.30-libvirt:
   variables:
     _BOX: kubernetes-1.30
     _PROVIDER: libvirt
+    _ARCHITECTURE: amd64
   needs:
     - build:kubernetes-1.30-libvirt
 
@@ -319,6 +328,7 @@ deploy:kubernetes-1.30-libvirt:
   variables:
     _BOX: kubernetes-1.30
     _PROVIDER: libvirt
+    _ARCHITECTURE: amd64
   needs:
     - test:kubernetes-1.30-libvirt
 
@@ -332,6 +342,7 @@ build:kubernetes-1.30-virtualbox:
   variables:
     _BOX: kubernetes-1.30
     _PROVIDER: virtualbox
+    _ARCHITECTURE: amd64
   needs:
     - build:kubernetes-1.30-libvirt
 
@@ -346,6 +357,7 @@ test:kubernetes-1.30-virtualbox:
   variables:
     _BOX: kubernetes-1.30
     _PROVIDER: virtualbox
+    _ARCHITECTURE: amd64
   needs:
     - build:kubernetes-1.30-virtualbox
 
@@ -360,6 +372,7 @@ deploy:kubernetes-1.30-virtualbox:
   variables:
     _BOX: kubernetes-1.30
     _PROVIDER: virtualbox
+    _ARCHITECTURE: amd64
   needs:
     - test:kubernetes-1.30-virtualbox
 
@@ -373,6 +386,7 @@ build:kubernetes-1.29-libvirt:
   variables:
     _BOX: kubernetes-1.29
     _PROVIDER: libvirt
+    _ARCHITECTURE: amd64
 
 test:kubernetes-1.29-libvirt:
   <<: *job-molecule-test
@@ -385,6 +399,7 @@ test:kubernetes-1.29-libvirt:
   variables:
     _BOX: kubernetes-1.29
     _PROVIDER: libvirt
+    _ARCHITECTURE: amd64
   needs:
     - build:kubernetes-1.29-libvirt
 
@@ -399,6 +414,7 @@ deploy:kubernetes-1.29-libvirt:
   variables:
     _BOX: kubernetes-1.29
     _PROVIDER: libvirt
+    _ARCHITECTURE: amd64
   needs:
     - test:kubernetes-1.29-libvirt
 
@@ -412,6 +428,7 @@ build:kubernetes-1.29-virtualbox:
   variables:
     _BOX: kubernetes-1.29
     _PROVIDER: virtualbox
+    _ARCHITECTURE: amd64
   needs:
     - build:kubernetes-1.29-libvirt
 
@@ -426,6 +443,7 @@ test:kubernetes-1.29-virtualbox:
   variables:
     _BOX: kubernetes-1.29
     _PROVIDER: virtualbox
+    _ARCHITECTURE: amd64
   needs:
     - build:kubernetes-1.29-virtualbox
 
@@ -440,5 +458,6 @@ deploy:kubernetes-1.29-virtualbox:
   variables:
     _BOX: kubernetes-1.29
     _PROVIDER: virtualbox
+    _ARCHITECTURE: amd64
   needs:
     - test:kubernetes-1.29-virtualbox
