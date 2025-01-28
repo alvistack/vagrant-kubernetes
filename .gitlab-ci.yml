@@ -268,7 +268,7 @@ build:kubernetes-1.32-virtualbox:
     _PROVIDER: virtualbox
     _ARCHITECTURE: amd64
   needs:
-    - build:kubernetes-1.32-libvirt
+    - deploy:kubernetes-1.32-libvirt
 
 test:kubernetes-1.32-virtualbox:
   <<: *job-molecule-test
@@ -354,7 +354,7 @@ build:kubernetes-1.31-virtualbox:
     _PROVIDER: virtualbox
     _ARCHITECTURE: amd64
   needs:
-    - build:kubernetes-1.31-libvirt
+    - deploy:kubernetes-1.31-libvirt
 
 test:kubernetes-1.31-virtualbox:
   <<: *job-molecule-test
@@ -440,7 +440,7 @@ build:kubernetes-1.30-virtualbox:
     _PROVIDER: virtualbox
     _ARCHITECTURE: amd64
   needs:
-    - build:kubernetes-1.30-libvirt
+    - deploy:kubernetes-1.30-libvirt
 
 test:kubernetes-1.30-virtualbox:
   <<: *job-molecule-test
