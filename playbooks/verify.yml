@@ -119,10 +119,6 @@
   tasks:
     - name: include role
       ansible.builtin.include_role:
-        name: sonobuoy
-
-    - name: include role
-      ansible.builtin.include_role:
         name: kube_kubectl
 
     - name: base64 encode

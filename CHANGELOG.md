@@ -2,6 +2,9 @@
 
 ## YYYYMMDD.Y.Z - TBC
 
+- Add VolumeSnapshotClass and VolumeGroupSnapshotClass support
+- Rename prefix with `helm_`
+- Simplify with Helm
 - Replace with `ansible.builtin.deb822_repository`
 - Support Ansible community package 11.1.0
 - Remove Kubernetes 1.29 support
