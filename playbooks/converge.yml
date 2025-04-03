@@ -90,8 +90,8 @@
 
     - name: reboot
       ansible.builtin.reboot:
-        connect_timeout: 1800
-        reboot_timeout: 1800
+        connect_timeout: 300
+        reboot_timeout: 300
         pre_reboot_delay: 60
         post_reboot_delay: 60
         test_command: bash -c "whoami"
@@ -139,6 +139,18 @@
     - name: include role
       ansible.builtin.include_role:
         name: cri_tools
+
+    - name: include role
+      ansible.builtin.include_role:
+        name: sonobuoy
+
+    - name: include role
+      ansible.builtin.include_role:
+        name: helm
+
+    - name: include role
+      ansible.builtin.include_role:
+        name: operator_sdk
 
     - name: include role
       ansible.builtin.include_role:
