@@ -215,6 +215,92 @@ default:
     - *script-linters
   retry: 2
 
+build:kubernetes-1.33-libvirt:
+  <<: *job-packer-build
+  stage: build
+  cache:
+    key: $CI_PIPELINE_ID-kubernetes-1.33-libvirt
+    paths:
+      - packer/*/output-vagrant
+  variables:
+    _BOX: kubernetes-1.33
+    _PROVIDER: libvirt
+    _ARCHITECTURE: amd64
+
+test:kubernetes-1.33-libvirt:
+  <<: *job-molecule-test
+  stage: test
+  cache:
+    key: $CI_PIPELINE_ID-kubernetes-1.33-libvirt
+    paths:
+      - packer/*/output-vagrant
+    policy: pull
+  variables:
+    _BOX: kubernetes-1.33
+    _PROVIDER: libvirt
+    _ARCHITECTURE: amd64
+  needs:
+    - build:kubernetes-1.33-libvirt
+
+deploy:kubernetes-1.33-libvirt:
+  <<: *job-vagrant-cloud-provider-upload
+  stage: deploy
+  cache:
+    key: $CI_PIPELINE_ID-kubernetes-1.33-libvirt
+    paths:
+      - packer/*/output-vagrant
+    policy: pull
+  variables:
+    _BOX: kubernetes-1.33
+    _PROVIDER: libvirt
+    _ARCHITECTURE: amd64
+  needs:
+    - test:kubernetes-1.33-libvirt
+
+build:kubernetes-1.33-virtualbox:
+  <<: *job-packer-build
+  stage: build
+  cache:
+    key: $CI_PIPELINE_ID-kubernetes-1.33-virtualbox
+    paths:
+      - packer/*/output-vagrant
+  variables:
+    _BOX: kubernetes-1.33
+    _PROVIDER: virtualbox
+    _ARCHITECTURE: amd64
+  needs:
+    - build:kubernetes-1.33-libvirt
+
+test:kubernetes-1.33-virtualbox:
+  <<: *job-molecule-test
+  stage: test
+  cache:
+    key: $CI_PIPELINE_ID-kubernetes-1.33-virtualbox
+    paths:
+      - packer/*/output-vagrant
+    policy: pull
+  variables:
+    _BOX: kubernetes-1.33
+    _PROVIDER: virtualbox
+    _ARCHITECTURE: amd64
+  needs:
+    - build:kubernetes-1.33-virtualbox
+
+deploy:kubernetes-1.33-virtualbox:
+  <<: *job-vagrant-cloud-provider-upload
+  stage: deploy
+  cache:
+    key: $CI_PIPELINE_ID-kubernetes-1.33-virtualbox
+    paths:
+      - packer/*/output-vagrant
+    policy: pull
+  variables:
+    _BOX: kubernetes-1.33
+    _PROVIDER: virtualbox
+    _ARCHITECTURE: amd64
+  needs:
+    - test:kubernetes-1.33-virtualbox
+
 build:kubernetes-1.32-libvirt:
   <<: *job-packer-build
   stage: build
@@ -386,89 +472,3 @@ deploy:kubernetes-1.31-virtualbox:
     _ARCHITECTURE: amd64
   needs:
     - test:kubernetes-1.31-virtualbox
-
-build:kubernetes-1.30-libvirt:
-  <<: *job-packer-build
-  stage: build
-  cache:
-    key: $CI_PIPELINE_ID-kubernetes-1.30-libvirt
-    paths:
-      - packer/*/output-vagrant
-  variables:
-    _BOX: kubernetes-1.30
-    _PROVIDER: libvirt
-    _ARCHITECTURE: amd64
-
-test:kubernetes-1.30-libvirt:
-  <<: *job-molecule-test
-  stage: test
-  cache:
-    key: $CI_PIPELINE_ID-kubernetes-1.30-libvirt
-    paths:
-      - packer/*/output-vagrant
-    policy: pull
-  variables:
-    _BOX: kubernetes-1.30
-    _PROVIDER: libvirt
-    _ARCHITECTURE: amd64
-  needs:
-    - build:kubernetes-1.30-libvirt
-
-deploy:kubernetes-1.30-libvirt:
-  <<: *job-vagrant-cloud-provider-upload
-  stage: deploy
-  cache:
-    key: $CI_PIPELINE_ID-kubernetes-1.30-libvirt
-    paths:
-      - packer/*/output-vagrant
-    policy: pull
-  variables:
-    _BOX: kubernetes-1.30
-    _PROVIDER: libvirt
-    _ARCHITECTURE: amd64
-  needs:
-    - test:kubernetes-1.30-libvirt
-
-build:kubernetes-1.30-virtualbox:
-  <<: *job-packer-build
-  stage: build
-  cache:
-    key: $CI_PIPELINE_ID-kubernetes-1.30-virtualbox
-    paths:
-      - packer/*/output-vagrant
-  variables:
-    _BOX: kubernetes-1.30
-    _PROVIDER: virtualbox
-    _ARCHITECTURE: amd64
-  needs:
-    - build:kubernetes-1.30-libvirt
-
-test:kubernetes-1.30-virtualbox:
-  <<: *job-molecule-test
-  stage: test
-  cache:
-    key: $CI_PIPELINE_ID-kubernetes-1.30-virtualbox
-    paths:
-      - packer/*/output-vagrant
-    policy: pull
-  variables:
-    _BOX: kubernetes-1.30
-    _PROVIDER: virtualbox
-    _ARCHITECTURE: amd64
-  needs:
-    - build:kubernetes-1.30-virtualbox
-
-deploy:kubernetes-1.30-virtualbox:
-  <<: *job-vagrant-cloud-provider-upload
-  stage: deploy
-  cache:
-    key: $CI_PIPELINE_ID-kubernetes-1.30-virtualbox
-    paths:
-      - packer/*/output-vagrant
-    policy: pull
-  variables:
-    _BOX: kubernetes-1.30
-    _PROVIDER: virtualbox
-    _ARCHITECTURE: amd64
-  needs:
-    - test:kubernetes-1.30-virtualbox
