@@ -2,6 +2,9 @@
 
 ## YYYYMMDD.Y.Z - TBC
 
+## 20250923.1.1 - 2025-09-23
+
+- Support Ansible community package 11.10.0
 - Support Kubernetes 1.34
 - Remove Kubernetes 1.31 support
 - Remove Kubernetes 1.30 support
