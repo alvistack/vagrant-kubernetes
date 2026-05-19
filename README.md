@@ -31,9 +31,6 @@ environment in single node all-in-one mode.
 - [`alvistack/kubernetes-1.34`](https://app.vagrantup.com/alvistack/boxes/kubernetes-1.34)
   - [`packer/kubernetes-1.34-libvirt/packer.json`](https://github.com/alvistack/vagrant-kubernetes/blob/master/packer/kubernetes-1.34-libvirt/packer.json)
   - [`packer/kubernetes-1.34-virtualbox/packer.json`](https://github.com/alvistack/vagrant-kubernetes/blob/master/packer/kubernetes-1.34-virtualbox/packer.json)
-- [`alvistack/kubernetes-1.33`](https://app.vagrantup.com/alvistack/boxes/kubernetes-1.33)
-  - [`packer/kubernetes-1.33-libvirt/packer.json`](https://github.com/alvistack/vagrant-kubernetes/blob/master/packer/kubernetes-1.33-libvirt/packer.json)
-  - [`packer/kubernetes-1.33-virtualbox/packer.json`](https://github.com/alvistack/vagrant-kubernetes/blob/master/packer/kubernetes-1.33-virtualbox/packer.json)
 
 ## Overview
 

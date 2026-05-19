@@ -2,6 +2,7 @@
 
 ## YYYYMMDD.Y.Z - TBC
 
+- Remove Kubernetes 1.33 support
 - Remove Kubernetes 1.32 support
 
 ## 20251008.1.1 - 2025-10-08
