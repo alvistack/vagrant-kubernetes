@@ -22,15 +22,15 @@ environment in single node all-in-one mode.
 
 ## Supported Boxes and Respective Packer Template Links
 
+- [`alvistack/kubernetes-1.36`](https://app.vagrantup.com/alvistack/boxes/kubernetes-1.36)
+  - [`packer/kubernetes-1.36-libvirt/packer.json`](https://github.com/alvistack/vagrant-kubernetes/blob/master/packer/kubernetes-1.36-libvirt/packer.json)
+  - [`packer/kubernetes-1.36-virtualbox/packer.json`](https://github.com/alvistack/vagrant-kubernetes/blob/master/packer/kubernetes-1.36-virtualbox/packer.json)
 - [`alvistack/kubernetes-1.35`](https://app.vagrantup.com/alvistack/boxes/kubernetes-1.35)
   - [`packer/kubernetes-1.35-libvirt/packer.json`](https://github.com/alvistack/vagrant-kubernetes/blob/master/packer/kubernetes-1.35-libvirt/packer.json)
   - [`packer/kubernetes-1.35-virtualbox/packer.json`](https://github.com/alvistack/vagrant-kubernetes/blob/master/packer/kubernetes-1.35-virtualbox/packer.json)
 - [`alvistack/kubernetes-1.34`](https://app.vagrantup.com/alvistack/boxes/kubernetes-1.34)
   - [`packer/kubernetes-1.34-libvirt/packer.json`](https://github.com/alvistack/vagrant-kubernetes/blob/master/packer/kubernetes-1.34-libvirt/packer.json)
   - [`packer/kubernetes-1.34-virtualbox/packer.json`](https://github.com/alvistack/vagrant-kubernetes/blob/master/packer/kubernetes-1.34-virtualbox/packer.json)
-- [`alvistack/kubernetes-1.33`](https://app.vagrantup.com/alvistack/boxes/kubernetes-1.33)
-  - [`packer/kubernetes-1.33-libvirt/packer.json`](https://github.com/alvistack/vagrant-kubernetes/blob/master/packer/kubernetes-1.33-libvirt/packer.json)
-  - [`packer/kubernetes-1.33-virtualbox/packer.json`](https://github.com/alvistack/vagrant-kubernetes/blob/master/packer/kubernetes-1.33-virtualbox/packer.json)
 
 ## Overview
 
