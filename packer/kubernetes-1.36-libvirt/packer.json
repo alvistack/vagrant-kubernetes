@@ -25,9 +25,6 @@
       ],
       "boot_wait": "1s",
       "cpus": 2,
-      "disk_additional_size": [
-        "10G"
-      ],
       "disk_cache": "writeback",
       "disk_compression": true,
       "disk_image": false,
@@ -99,8 +96,8 @@
         "set -eu",
         "sudo rm -rf /etc/apt/sources.list*",
         "sudo mkdir -p /etc/apt/sources.list.d",
-        "printf \"Components: main universe restricted multiverse\nEnabled: yes\nX-Repolib-Name: ubuntu\nSigned-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg\nSuites: noble noble-updates noble-backports\nTypes: deb\nURIs: http://archive.ubuntu.com/ubuntu\n\" | sudo tee /etc/apt/sources.list.d/ubuntu.sources > /dev/null",
-        "printf \"Components: main universe restricted multiverse\nEnabled: yes\nX-Repolib-Name: ubuntu-security\nSigned-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg\nSuites: noble-security\nTypes: deb\nURIs: http://security.ubuntu.com/ubuntu\n\" | sudo tee /etc/apt/sources.list.d/ubuntu-security.sources > /dev/null"
+        "printf \"Components: main universe restricted multiverse\nEnabled: yes\nX-Repolib-Name: ubuntu\nSigned-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg\nSuites: resolute resolute-updates resolute-backports\nTypes: deb\nURIs: http://archive.ubuntu.com/ubuntu\n\" | sudo tee /etc/apt/sources.list.d/ubuntu.sources > /dev/null",
+        "printf \"Components: main universe restricted multiverse\nEnabled: yes\nX-Repolib-Name: ubuntu-security\nSigned-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg\nSuites: resolute-security\nTypes: deb\nURIs: http://security.ubuntu.com/ubuntu\n\" | sudo tee /etc/apt/sources.list.d/ubuntu-security.sources > /dev/null"
       ],
       "type": "shell"
     },

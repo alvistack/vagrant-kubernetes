@@ -59,30 +59,6 @@
           "{{.Name}}",
           "--nat-localhostreachable1",
           "on"
-        ],
-        [
-          "createmedium",
-          "disk",
-          "--filename",
-          "sdb.vmdk",
-          "--size",
-          "10240",
-          "--format",
-          "VMDK"
-        ],
-        [
-          "storageattach",
-          "{{.Name}}",
-          "--storagectl",
-          "SATA",
-          "--port",
-          "1",
-          "--device",
-          "0",
-          "--type",
-          "hdd",
-          "--medium",
-          "sdb.vmdk"
         ]
       ],
       "vrdp_bind_address": "0.0.0.0",
@@ -133,8 +109,8 @@
         "set -eu",
         "sudo rm -rf /etc/apt/sources.list*",
         "sudo mkdir -p /etc/apt/sources.list.d",
-        "printf \"Components: main universe restricted multiverse\nEnabled: yes\nX-Repolib-Name: ubuntu\nSigned-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg\nSuites: noble noble-updates noble-backports\nTypes: deb\nURIs: http://archive.ubuntu.com/ubuntu\n\" | sudo tee /etc/apt/sources.list.d/ubuntu.sources > /dev/null",
-        "printf \"Components: main universe restricted multiverse\nEnabled: yes\nX-Repolib-Name: ubuntu-security\nSigned-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg\nSuites: noble-security\nTypes: deb\nURIs: http://security.ubuntu.com/ubuntu\n\" | sudo tee /etc/apt/sources.list.d/ubuntu-security.sources > /dev/null"
+        "printf \"Components: main universe restricted multiverse\nEnabled: yes\nX-Repolib-Name: ubuntu\nSigned-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg\nSuites: resolute resolute-updates resolute-backports\nTypes: deb\nURIs: http://archive.ubuntu.com/ubuntu\n\" | sudo tee /etc/apt/sources.list.d/ubuntu.sources > /dev/null",
+        "printf \"Components: main universe restricted multiverse\nEnabled: yes\nX-Repolib-Name: ubuntu-security\nSigned-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg\nSuites: resolute-security\nTypes: deb\nURIs: http://security.ubuntu.com/ubuntu\n\" | sudo tee /etc/apt/sources.list.d/ubuntu-security.sources > /dev/null"
       ],
       "type": "shell"
     },
