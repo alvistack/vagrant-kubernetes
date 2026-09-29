@@ -21,7 +21,7 @@ driver:
   provision: true
 platforms:
   - name: ${_MOLECULE_INSTANCE_NAME}-1
-    box: alvistack/kubernetes-1.34
+    box: alvistack/kubernetes-1.37
     cpus: 2
     memory: 8192
     provider_raw_config_args:
